@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policía Portuaria — Oposiciones</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #112240;
+    --navy3: #1d3461;
+    --gold: #c9a84c;
+    --gold2: #e8c96b;
+    --white: #f0f4ff;
+    --gray: #8892a4;
+    --light-bg: #f5f7fa;
+    --light-card: #ffffff;
+    --light-text: #0a1628;
+    --light-border: #dde3ee;
+    --red: #e05252;
+    --green: #3dbf7a;
+    --blue-accent: #4a90d9;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(10,22,40,0.13);
+  }
+  [data-theme="dark"] {
+    --bg: var(--navy);
+    --card: var(--navy2);
+    --card2: var(--navy3);
+    --text: var(--white);
+    --text2: #a8b8d0;
+    --border: rgba(201,168,76,0.18);
+    --input-bg: rgba(255,255,255,0.07);
+  }
+  [data-theme="light"] {
+    --bg: var(--light-bg);
+    --card: var(--light-card);
+    --card2: #eef2f9;
+    --text: var(--light-text);
+    --text2: #4a5568;
+    --border: var(--light-border);
+    --input-bg: #f0f4ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--card);
+    border-bottom: 2px solid var(--gold);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .logo-anchor { font-size: 1.6rem; }
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .user-badge {
+    font-size: 0.8rem;
+    color: var(--text2);
+    background: var(--card2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  .btn-icon {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .btn-icon:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── PAGES ── */
+  .page { display:none; animation: fadeIn 0.35s ease; }
+  .page.active { display:block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── LOGIN ── */
+  #page-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--navy);
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+  }
+  #page-login.hidden { display:none; }
+  .login-box {
+    background: var(--navy2);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+  .login-emblem { font-size: 3rem; margin-bottom: 8px; }
+  .login-title { font-size: 1.5rem; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
+  .login-sub { font-size: 0.85rem; color: var(--gray); margin-bottom: 32px; }
+  .field-group { margin-bottom: 16px; text-align:left; }
+  .field-group label { font-size:0.8rem; color: var(--gray); display:block; margin-bottom:6px; letter-spacing:0.05em; text-transform:uppercase; }
+  .field-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .field-group input:focus { border-color: var(--gold); }
+  .btn-login {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.04em;
+  }
+  .btn-login:hover { background: var(--gold2); transform: translateY(-1px); }
+  .login-error { color: var(--red); font-size: 0.85rem; margin-top: 12px; min-height: 20px; }
+
+  /* ── HOME ── */
+  .home-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy3) 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+  }
+  [data-theme="light"] .home-hero { background: linear-gradient(135deg, #1d3461 0%, #2a4a8a 100%); }
+  .hero-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; color: var(--gold); letter-spacing: -0.02em; }
+  .hero-sub { color: #a8c0e0; margin-top: 8px; font-size: 1rem; }
+  .stats-strip {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 40px;
+    padding: 10px 22px;
+    text-align: center;
+  }
+  .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--gold); }
+  .stat-lbl { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .main-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media(max-width:600px){ .main-grid { grid-template-columns:1fr; } }
+  .mode-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .mode-card::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background: linear-gradient(135deg, transparent 60%, rgba(201,168,76,0.07));
+    transition: opacity 0.3s;
+  }
+  .mode-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .mode-icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .mode-title { font-size: 1.2rem; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+  .mode-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.5; }
+  .mode-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PROGRESS SECTION ── */
+  .progress-section {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .progress-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+  .progress-card:hover { border-color: var(--gold); }
+  .progress-label { font-size: 0.8rem; color: var(--text2); margin-bottom: 8px; }
+  .progress-bar-wrap { background: var(--card2); border-radius: 4px; height: 6px; overflow:hidden; }
+  .progress-bar-fill { height:100%; border-radius:4px; background: var(--gold); transition: width 0.6s ease; }
+  .progress-pct { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-top: 6px; }
+
+  /* ── EXAM SELECTOR ── */
+  #page-test, #page-desarrollo { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .btn-back {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+  .page-title-h { font-size: 1.4rem; font-weight: 800; color: var(--text); }
+
+  .exam-list { display: grid; gap: 12px; }
+  .exam-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+  }
+  .exam-item:hover { border-color: var(--gold); transform: translateX(4px); }
+  .exam-item-left { display:flex; align-items:center; gap:16px; }
+  .exam-num {
+    width: 44px; height: 44px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 10px;
+    display: flex; align-items:center; justify-content:center;
+    font-weight: 800; color: var(--gold); font-size: 1rem;
+  }
+  .exam-name { font-weight: 700; font-size: 0.95rem; }
+  .exam-meta { font-size: 0.78rem; color: var(--text2); margin-top: 3px; }
+  .exam-score-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    background: var(--card2);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .exam-score-badge.good { background: rgba(61,191,122,0.15); color: var(--green); border-color: rgba(61,191,122,0.3); }
+  .exam-score-badge.mid { background: rgba(201,168,76,0.15); color: var(--gold); border-color: rgba(201,168,76,0.3); }
+  .exam-score-badge.bad { background: rgba(224,82,82,0.15); color: var(--red); border-color: rgba(224,82,82,0.3); }
+
+  /* ── QUIZ ── */
+  #page-quiz { max-width: 800px; margin: 0 auto; padding: 24px 20px; }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .quiz-progress-info { font-size: 0.85rem; color: var(--text2); }
+  .quiz-progress-bar {
+    width: 100%;
+    background: var(--card2);
+    border-radius: 4px;
+    height: 5px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill { height:100%; background: var(--gold); border-radius:4px; transition: width 0.4s ease; }
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .question-num {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .question-text { font-size: 1rem; line-height: 1.6; font-weight: 600; color: var(--text); }
+  .options-list { display:grid; gap:10px; margin-top: 20px; }
+  .option-btn {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: all 0.18s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { background: rgba(61,191,122,0.12); border-color: var(--green); color: var(--text); }
+  .option-btn.wrong { background: rgba(224,82,82,0.1); border-color: var(--red); }
+  .option-btn.revealed { background: rgba(61,191,122,0.06); border-color: rgba(61,191,122,0.3); }
+  .option-letter {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex; align-items:center; justify-content:center;
+    font-weight: 700; font-size: 0.8rem;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .option-btn.correct .option-letter { background: var(--green); color: white; }
+  .option-btn.wrong .option-letter { background: var(--red); color: white; }
+
+  .feedback-box {
+    background: var(--card2);
+    border-left: 3px solid var(--green);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text);
+    margin-top: 16px;
+    display: none;
+  }
+  .feedback-box.wrong-fb { border-left-color: var(--red); }
+  .feedback-box.show { display:block; animation: fadeIn 0.2s ease; }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 24px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--card2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── RESULTS ── */
+  #page-results { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+  .results-hero {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .score-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 6px solid var(--card2);
+    display: flex; align-items:center; justify-content:center;
+    margin: 0 auto 20px;
+    position: relative;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text);
+  }
+  .score-ring.great { border-color: var(--green); color: var(--green); }
+  .score-ring.ok { border-color: var(--gold); color: var(--gold); }
+  .score-ring.bad { border-color: var(--red); color: var(--red); }
+  .results-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+  .results-sub { color: var(--text2); font-size: 0.9rem; }
+  .results-stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .r-stat {
+    background: var(--card2);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .r-stat-num { font-size: 1.5rem; font-weight: 800; }
+  .r-stat-lbl { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+  .r-stat.g .r-stat-num { color: var(--green); }
+  .r-stat.y .r-stat-num { color: var(--gold); }
+  .r-stat.r .r-stat-num { color: var(--red); }
+
+  .weakness-section { margin-top: 20px; }
+  .weakness-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; gap:8px; }
+  .weakness-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .weakness-item .w-q { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .weakness-item .w-a { color: var(--text2); }
+  .weakness-item .w-correct { color: var(--green); font-weight: 600; }
+
+  /* ── DESARROLLO ── */
+  .desarro-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+  }
+  .desarro-item:hover { border-color: var(--gold); transform: translateX(4px); }
+  .desarro-icon { font-size: 1.5rem; flex-shrink:0; }
+  .desarro-text { flex:1; }
+  .desarro-name { font-weight: 700; font-size: 0.95rem; }
+  .desarro-meta { font-size: 0.78rem; color: var(--text2); margin-top: 3px; }
+
+  /* ── DESARROLLO EXAM ── */
+  #page-desarro-exam { max-width: 800px; margin: 0 auto; padding: 24px 20px; }
+  .scenario-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 24px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .textarea-wrap { margin-bottom: 16px; }
+  .textarea-wrap label { font-size: 0.8rem; color: var(--text2); display:block; margin-bottom:8px; letter-spacing:0.05em; text-transform:uppercase; }
+  textarea {
+    width: 100%;
+    min-height: 220px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    font-family: inherit;
+    transition: border 0.2s;
+  }
+  textarea:focus { border-color: var(--gold); }
+  textarea::placeholder { color: var(--text2); }
+  .ai-response-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 20px;
+    display: none;
+  }
+  .ai-response-box.show { display:block; animation: fadeIn 0.3s ease; }
+  .ai-response-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ai-badge {
+    background: linear-gradient(135deg, var(--gold), var(--blue-accent));
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+  .ai-score-display {
+    margin-left: auto;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  .ai-response-text {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .loading-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 12px 0;
+  }
+  .loading-dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: bounce 1.2s infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 0.875rem;
+    box-shadow: var(--shadow);
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    max-width: 320px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-left: 3px solid var(--green); }
+  .toast.error { border-left: 3px solid var(--red); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:480px){
+    .results-stats { grid-template-columns:1fr 1fr; }
+    header { padding: 0 14px; }
+    .logo span { display:none; }
+    .quiz-nav { flex-direction:column; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- LOGIN -->
+<div id="page-login">
+  <div class="login-box">
+    <div class="login-emblem">⚓</div>
+    <div class="login-title">POLICÍA PORTUARIA</div>
+    <div class="login-sub">Plataforma de Preparación de Oposiciones</div>
+    <div class="field-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="tu@email.com" />
+    </div>
+    <div class="field-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" />
+    </div>
+    <button class="btn-login" onclick="doLogin()">ACCEDER</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="logo-anchor">⚓</span>
+    <span>POLICÍA PORTUARIA</span>
+  </div>
+  <div class="header-right">
+    <span class="user-badge" id="user-badge">—</span>
+    <button class="btn-icon" onclick="toggleTheme()" title="Cambiar tema" id="theme-btn">🌙</button>
+    <button class="btn-icon" onclick="doLogout()" title="Cerrar sesión">🚪</button>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page">
+  <div class="home-hero">
+    <div class="hero-title">Tu Academia de Oposiciones</div>
+    <div class="hero-sub">Autoridad Portuaria de Baleares — APB</div>
+    <div class="stats-strip">
+      <div class="stat-pill">
+        <div class="stat-num" id="stat-tests-done">0</div>
+        <div class="stat-lbl">Tests realizados</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-num" id="stat-avg">—</div>
+        <div class="stat-lbl">Media global</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-num" id="stat-desarro">0</div>
+        <div class="stat-lbl">Supuestos corregidos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="mode-card" onclick="showPage('page-test')">
+      <div class="mode-icon">📋</div>
+      <div class="mode-title">TEST TIPO EXAMEN</div>
+      <div class="mode-desc">Simulacros basados en el examen real 2023 y convocatorias anteriores. Penalización por error, feedback inmediato.</div>
+      <div class="mode-badge">10 EXÁMENES · 65 PREGUNTAS</div>
+    </div>
+    <div class="mode-card" onclick="showPage('page-desarrollo')">
+      <div class="mode-icon">✍️</div>
+      <div class="mode-title">SUPUESTOS PRÁCTICOS</div>
+      <div class="mode-desc">Desarrolla tu respuesta a supuestos reales. La IA analiza tu respuesta y te indica en qué mejorar.</div>
+      <div class="mode-badge">10 SUPUESTOS · IA CORRECTORA</div>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <div class="section-title">📊 Tu progreso por bloques temáticos</div>
+    <div class="progress-grid" id="progress-grid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- TEST LIST -->
+<div id="page-test" class="page">
+  <div class="page-header">
+    <button class="btn-back" onclick="showPage('page-home')">← Inicio</button>
+    <div class="page-title-h">Tests Tipo Examen</div>
+  </div>
+  <div class="exam-list" id="test-list"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <div class="quiz-header">
+    <button class="btn-back" onclick="confirmExitQuiz()">← Salir</button>
+    <div class="quiz-progress-info" id="quiz-progress-info">Pregunta 1 de 65</div>
+  </div>
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+  <div class="question-card">
+    <div class="question-num" id="q-num"></div>
+    <div class="question-text" id="q-text"></div>
+    <div class="options-list" id="q-options"></div>
+    <div class="feedback-box" id="q-feedback"></div>
+  </div>
+  <div class="quiz-nav">
+    <button class="btn-secondary" id="btn-skip" onclick="skipQuestion()">Saltar</button>
+    <button class="btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none">Siguiente →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="page-results" class="page">
+  <div class="page-header">
+    <button class="btn-back" onclick="showPage('page-test')">← Tests</button>
+    <div class="page-title-h">Resultado</div>
+  </div>
+  <div class="results-hero">
+    <div class="score-ring" id="results-ring">0%</div>
+    <div class="results-title" id="results-title">—</div>
+    <div class="results-sub" id="results-sub">—</div>
+    <div class="results-stats">
+      <div class="r-stat g"><div class="r-stat-num" id="r-correct">0</div><div class="r-stat-lbl">Correctas</div></div>
+      <div class="r-stat r"><div class="r-stat-num" id="r-wrong">0</div><div class="r-stat-lbl">Incorrectas</div></div>
+      <div class="r-stat y"><div class="r-stat-num" id="r-skip">0</div><div class="r-stat-lbl">Sin contestar</div></div>
+    </div>
+  </div>
+  <div class="weakness-section">
+    <div class="weakness-title">⚠️ Preguntas que debes repasar</div>
+    <div id="weakness-list"></div>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+    <button class="btn-primary" onclick="retryExam()">Repetir examen</button>
+    <button class="btn-secondary" onclick="showPage('page-test')">Volver a tests</button>
+    <button class="btn-secondary" onclick="showPage('page-home')">Inicio</button>
+  </div>
+</div>
+
+<!-- DESARROLLO LIST -->
+<div id="page-desarrollo" class="page">
+  <div class="page-header">
+    <button class="btn-back" onclick="showPage('page-home')">← Inicio</button>
+    <div class="page-title-h">Supuestos Prácticos</div>
+  </div>
+  <div id="desarro-list"></div>
+</div>
+
+<!-- DESARROLLO EXAM -->
+<div id="page-desarro-exam" class="page">
+  <div class="page-header">
+    <button class="btn-back" onclick="showPage('page-desarrollo')">← Supuestos</button>
+    <div class="page-title-h" id="desarro-exam-title">Supuesto Práctico</div>
+  </div>
+  <div class="scenario-box" id="desarro-scenario"></div>
+  <div class="textarea-wrap">
+    <label>Tu respuesta — desarrolla tu actuación paso a paso</label>
+    <textarea id="desarro-answer" placeholder="Escribe aquí tu respuesta. Describe la actuación paso a paso, los artículos aplicables, las denuncias que formularías y el informe final..."></textarea>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <button class="btn-primary" onclick="correDesarrollo()">🤖 Corregir con IA</button>
+    <button class="btn-secondary" onclick="clearDesarrollo()">Limpiar</button>
+  </div>
+  <div class="ai-response-box" id="ai-response-box">
+    <div class="ai-response-header">
+      <div class="ai-badge">IA CORRECTORA</div>
+      <span id="ai-response-title" style="font-weight:700;font-size:0.9rem;">Corrección</span>
+      <div class="ai-score-display" id="ai-score-display"></div>
+    </div>
+    <div class="ai-response-text" id="ai-response-text"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+// ═══════════════════════════════════════════════════════
+// FIREBASE
+// ═══════════════════════════════════════════════════════
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDjW2VKVe6PA2HMVMqvPOoBFQHmzfVcfyw",
+  authDomain: "policia-portuaria.firebaseapp.com",
+  projectId: "policia-portuaria",
+  storageBucket: "policia-portuaria.firebasestorage.app",
+  messagingSenderId: "483677522092",
+  appId: "1:483677522092:web:63bf1800c0b7da67623709",
+  measurementId: "G-333LL75LCQ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ═══════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════
+let currentUser = null;
+let userProgress = {};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('page-login').classList.add('hidden');
+    document.getElementById('user-badge').textContent = user.email.split('@')[0];
+    await loadUserProgress();
+    showPage('page-home');
+  } else {
+    currentUser = null;
+    document.getElementById('page-login').classList.remove('hidden');
+  }
+});
+
+window.doLogin = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    errEl.textContent = e.code === 'auth/invalid-credential'
+      ? 'Correo o contraseña incorrectos.'
+      : 'Error: ' + e.message;
+  }
+};
+
+document.getElementById('login-pass').addEventListener('keydown', e => {
+  if(e.key==='Enter') window.doLogin();
+});
+
+window.doLogout = async function() {
+  await signOut(auth);
+};
+
+// ═══════════════════════════════════════════════════════
+// FIREBASE DATA
+// ═══════════════════════════════════════════════════════
+async function loadUserProgress() {
+  if(!currentUser) return;
+  try {
+    const ref = doc(db, 'users', currentUser.uid);
+    const snap = await getDoc(ref);
+    if(snap.exists()) {
+      userProgress = snap.data();
+    } else {
+      userProgress = { testHistory:[], desarrolloHistory:[], themeStats:{} };
+      await setDoc(ref, userProgress);
+    }
+    updateHomeStats();
+  } catch(e) { console.error('Load error', e); }
+}
+
+async function saveTestResult(examId, examName, score, pct, correct, wrong, skipped, weaknesses) {
+  if(!currentUser) return;
+  const ref = doc(db, 'users', currentUser.uid);
+  const result = {
+    examId, examName, score, pct, correct, wrong, skipped,
+    weaknesses: weaknesses.slice(0,5).map(w=>w.question.substring(0,80)),
+    date: new Date().toISOString()
+  };
+  try {
+    await updateDoc(ref, {
+      testHistory: arrayUnion(result),
+      [`examScores.${examId}`]: pct,
+      lastActivity: serverTimestamp()
+    });
+    if(!userProgress.testHistory) userProgress.testHistory = [];
+    userProgress.testHistory.push(result);
+    if(!userProgress.examScores) userProgress.examScores = {};
+    userProgress.examScores[examId] = pct;
+    updateHomeStats();
+  } catch(e) { console.error('Save test error', e); }
+}
+
+async function saveDesarrolloResult(supuestoId, title, aiScore, aiText) {
+  if(!currentUser) return;
+  const ref = doc(db, 'users', currentUser.uid);
+  const result = {
+    supuestoId, title, aiScore,
+    date: new Date().toISOString()
+  };
+  try {
+    await updateDoc(ref, {
+      desarrolloHistory: arrayUnion(result),
+      lastActivity: serverTimestamp()
+    });
+    if(!userProgress.desarrolloHistory) userProgress.desarrolloHistory = [];
+    userProgress.desarrolloHistory.push(result);
+    updateHomeStats();
+  } catch(e) { console.error('Save desarro error', e); }
+}
+
+async function saveThemeStat(theme, correct, total) {
+  if(!currentUser) return;
+  const ref = doc(db, 'users', currentUser.uid);
+  try {
+    await updateDoc(ref, {
+      [`themeStats.${theme}`]: { correct, total, pct: Math.round(correct/total*100) }
+    });
+    if(!userProgress.themeStats) userProgress.themeStats = {};
+    userProgress.themeStats[theme] = { correct, total, pct: Math.round(correct/total*100) };
+  } catch(e) {}
+}
+
+function updateHomeStats() {
+  const th = userProgress.testHistory || [];
+  document.getElementById('stat-tests-done').textContent = th.length;
+  if(th.length > 0) {
+    const avg = Math.round(th.reduce((a,b)=>a+b.pct,0)/th.length);
+    document.getElementById('stat-avg').textContent = avg + '%';
+  }
+  const dh = userProgress.desarrolloHistory || [];
+  document.getElementById('stat-desarro').textContent = dh.length;
+  renderProgressGrid();
+}
+
+function renderProgressGrid() {
+  const grid = document.getElementById('progress-grid');
+  const themes = [
+    { key:'ley_puertos', label:'Ley de Puertos (TRLPEMM)' },
+    { key:'reglamento', label:'Reglamento de Servicio y Policía' },
+    { key:'mmpp', label:'Mercancías Peligrosas' },
+    { key:'orc', label:'Ordenanza de Circulación (ORC)' },
+    { key:'proteccion', label:'Protección Marítima y Portuaria' },
+    { key:'supuestos', label:'Supuestos Prácticos' },
+  ];
+  const ts = userProgress.themeStats || {};
+  grid.innerHTML = themes.map(t => {
+    const s = ts[t.key] || { pct:0 };
+    const pct = s.pct || 0;
+    return `<div class="progress-card">
+      <div class="progress-label">${t.label}</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div class="progress-pct">${pct > 0 ? pct+'% acierto' : 'Sin datos aún'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+window.showPage = function(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const p = document.getElementById(id);
+  if(p) { p.classList.add('active'); window.scrollTo(0,0); }
+  if(id==='page-test') renderTestList();
+  if(id==='page-desarrollo') renderDesarrolloList();
+};
+
+// ═══════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════
+let isDark = true;
+window.toggleTheme = function() {
+  isDark = !isDark;
+  document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+};
+
+// ═══════════════════════════════════════════════════════
+// EXAM DATA — 10 TESTS × 65 QUESTIONS
+// ═══════════════════════════════════════════════════════
+const EXAMS = [
+  { id:'exam1', name:'Examen Oficial 2023', year:'2023', theme:'ley_puertos', questions: getExam1() },
+  { id:'exam2', name:'Simulacro APB — Bloque Legislativo', year:'2024', theme:'ley_puertos', questions: getExam2() },
+  { id:'exam3', name:'Simulacro — Mercancías Peligrosas', year:'2024', theme:'mmpp', questions: getExam3() },
+  { id:'exam4', name:'Simulacro — Supuestos y Reglamento', year:'2024', theme:'reglamento', questions: getExam4() },
+  { id:'exam5', name:'Simulacro — Circulación y Tráfico', year:'2024', theme:'orc', questions: getExam5() },
+  { id:'exam6', name:'Simulacro — Protección Marítima', year:'2024', theme:'proteccion', questions: getExam6() },
+  { id:'exam7', name:'Simulacro — Tasas y Servicios Portuarios', year:'2024', theme:'ley_puertos', questions: getExam7() },
+  { id:'exam8', name:'Simulacro — Seguridad y Emergencias', year:'2024', theme:'reglamento', questions: getExam8() },
+  { id:'exam9', name:'Simulacro — Organización Portuaria', year:'2024', theme:'ley_puertos', questions: getExam9() },
+  { id:'exam10', name:'Simulacro Final Completo', year:'2024', theme:'reglamento', questions: getExam10() },
+];
+
+function getExam1() { return [
+  { q:"¿Qué artículo de la Ley de Puertos tipifica el uso de obras o instalaciones portuarias sin autorización?", opts:["Art. 306.1.a)","Art. 307.1.b)","Art. 305.2.c)","Art. 308.1.a)"], correct:0, explanation:"El Art. 306.1.a) del TRLPEMM 2/2011 sanciona el uso de las obras o instalaciones portuarias sin la preceptiva autorización, siendo considerada infracción grave.", theme:'reglamento' },
+  { q:"¿Cuál es la infracción tipificada en el artículo 307.1.g) del TRLPEMM?", opts:["Uso no autorizado de instalaciones","El falseamiento de información suministrada a la AP por propia iniciativa","Venta ambulante no autorizada","Publicidad exterior no autorizada"], correct:1, explanation:"El Art. 307.1.g) del TRLPEMM tipifica el falseamiento de la información suministrada a la Autoridad Portuaria por propia iniciativa como infracción.", theme:'reglamento' },
+  { q:"La publicidad exterior no autorizada en el espacio portuario está tipificada en:", opts:["Art. 306.1.a) TRLPEMM","Art. 306.2.b) TRLPEMM","Art. 307.3.d) TRLPEMM","Art. 305.1.c) TRLPEMM"], correct:1, explanation:"El Art. 306.2.b) del TRLPEMM tipifica la publicidad exterior no autorizada en el espacio portuario.", theme:'reglamento' },
+  { q:"¿Qué artículo del Reglamento de Explotación y Policía regula el acceso de personas a zonas acotadas o cercadas sin autorización?", opts:["Art. 7","Art. 10","Art. 15","Art. 20"], correct:1, explanation:"El Art. 10 del Reglamento de Explotación y Policía regula el acceso de personas a las zonas acotadas o cercadas sin autorización, tipificado en el 306.1.a).", theme:'reglamento' },
+  { q:"¿En qué artículo del Reglamento de Explotación y Policía se regula el uso de obras o instalaciones portuarias?", opts:["Art. 5","Art. 7","Art. 12","Art. 18"], correct:1, explanation:"El Art. 7 del Reglamento de Explotación y Policía regula el uso de obras e instalaciones portuarias sin autorización.", theme:'reglamento' },
+  { q:"La desobediencia al agente de la autoridad portuaria está tipificada en el Reglamento en el:", opts:["Art. 73","Art. 74","Art. 75","Art. 76"], correct:2, explanation:"El Art. 75 del Reglamento tipifica la desobediencia al agente de la autoridad portuaria.", theme:'reglamento' },
+  { q:"¿Quién autoriza en los puertos estatales la realización de operaciones comerciales?", opts:["Ministerio de Fomento","Ministerio de Economía y Hacienda","Puertos del Estado","Ministerio de Sanidad"], correct:2, explanation:"Puertos del Estado es el organismo competente para autorizar las operaciones comerciales en los puertos de interés general.", theme:'ley_puertos' },
+  { q:"¿Qué artículo de la Constitución atribuye al Estado la competencia exclusiva sobre puertos de interés general?", opts:["Art. 145/89","Art. 121.2","Art. 149.1.20","Art. 307.1.d)"], correct:2, explanation:"El Art. 149.1.20 de la Constitución Española atribuye al Estado la competencia exclusiva sobre puertos de interés general.", theme:'ley_puertos' },
+  { q:"Las infracciones portuarias se clasifican en:", opts:["Leves, menos graves, graves y muy graves","Faltas leves, graves y menos graves","Leves, graves y muy graves","Leves y graves solamente"], correct:2, explanation:"Según el TRLPEMM, las infracciones se clasifican en leves, graves y muy graves.", theme:'ley_puertos' },
+  { q:"¿Cada cuánto tiempo elaboran las Autoridades Portuarias los planes de Recepción de Residuos?", opts:["Cada tres años según el RD 1318/2002","Cada seis años según el RD 725/2004","Cada tres años según el RD 145/89","Cada seis años según el RD 03/2018"], correct:0, explanation:"Las AAPP elaboran y aprueban los Planes de Recepción de Residuos cada tres años, según establece el RD 1318/2002.", theme:'ley_puertos' },
+  { q:"La temperatura a partir de la cual una sustancia arde espontáneamente sin llama ni chispa se denomina:", opts:["Ullage","Autoinflamación","Flash Point","Autoignición"], correct:3, explanation:"La autoignición es la temperatura a partir de la cual una sustancia combustible arde espontáneamente sin necesidad de chispa ni llama exterior.", theme:'mmpp' },
+  { q:"¿Qué bandera deben izar los buques que transporten mercancías peligrosas al entrar en puerto?", opts:["Bandera 'D' del Código Internacional","Bandera 'B' del Código Internacional","Bandera 'B' del Código Nacional","Bandera roja durante el día"], correct:1, explanation:"Los buques que transportan mercancías peligrosas deben izar durante el día la bandera 'B' del Código Internacional de Señales y una luz roja por la noche.", theme:'mmpp' },
+  { q:"¿A qué clase de MMPP pertenece la etiqueta con fondo blanco en la mitad superior y rojo en la mitad inferior con símbolo de llama?", opts:["Clase 5","Clase 3","Clase 6","Clase 4"], correct:1, explanation:"La etiqueta con fondo blanco en la mitad superior y rojo en la mitad inferior con símbolo de llama corresponde a la Clase 3 (líquidos inflamables).", theme:'mmpp' },
+  { q:"¿Quién es la autoridad competente para decisiones sobre buques necesitados de asistencia?", opts:["Autoridad Portuaria","Director General de la Marina Mercante","Capitán Marítimo","Ministerio de Fomento"], correct:2, explanation:"El Capitán Marítimo es la autoridad competente para la toma de decisiones respecto de los buques necesitados de asistencia.", theme:'ley_puertos' },
+  { q:"¿Qué es la Marina Seca?", opts:["Un tipo de maniobra de atraque","Utilización de una parcela para depósito de embarcaciones de recreo con instalaciones de varada y botadura","Una zona de fondeo permanente","Un área reservada para buques de pesca"], correct:1, explanation:"Marina Seca es la utilización de una parcela, en zonas definidas para ello, para depósito de embarcaciones de recreo junto con su remolque y las instalaciones para varada y botadura.", theme:'reglamento' },
+  { q:"¿Qué es la botadura?", opts:["El proceso de varar una embarcación","El proceso de lanzar o echar al agua una embarcación","La maniobra de atraque de un buque","El desguace de una embarcación"], correct:1, explanation:"La botadura es el proceso de lanzar o echar al agua una embarcación.", theme:'reglamento' },
+  { q:"La prohibición de practicar la pesca desde el cantil del muelle está recogida en el artículo:", opts:["Art. 54","Art. 64.c)","Art. 54.A","Art. 43"], correct:1, explanation:"El Art. 64.c) del Reglamento de Servicio y Policía prohíbe la pesca desde el cantil del muelle sin perjudicar a nadie.", theme:'reglamento' },
+  { q:"El abandono de escombros en zona portuaria sin autorización está tipificado en el artículo:", opts:["Art. 114.1.A) Ley de Puertos","Art. 114.1.D) Ley de Puertos","Art. 43 Reglamento","Art. 306.2.e) TRLPEMM"], correct:1, explanation:"El abandono de escombros en zona portuaria sin autorización está tipificado en el Art. 114.1.D) de la Ley de Puertos de Interés General.", theme:'ley_puertos' },
+  { q:"Los servicios portuarios se clasifican en:", opts:["Servicios generales, portuarios, comerciales y de señalización náutica","Servicios portuarios, generales, pesqueros y de señalización náutica","Servicios generales, portuarios, comerciales y de señalización marítima","Servicios técnico-náuticos, portuarios, comerciales y de señalización marítima"], correct:2, explanation:"Los servicios se clasifican en: servicios generales, servicios portuarios, servicios comerciales y servicios de señalización marítima.", theme:'ley_puertos' },
+  { q:"¿Qué documento confirma el consignatario a la Comisaría de Explotación sobre la próxima entrada de un buque?", opts:["La fecha de entrada por escrito dentro de las 6 horas hábiles siguientes","La fecha de entrada por escrito dentro de las 3 horas hábiles siguientes","En el plazo de 48 horas","En el plazo de 24 horas"], correct:0, explanation:"El consignatario confirma por escrito la fecha de entrada del buque dentro de las 6 horas hábiles siguientes.", theme:'reglamento' },
+  { q:"¿Quién separará a los Vocales del Consejo de Administración de una Autoridad Portuaria?", opts:["Las Comunidades Autónomas","El Consejo de Administración","La Administración Pública","El Consejo Rector de Puertos del Estado"], correct:3, explanation:"El Consejo Rector de Puertos del Estado es quien puede separar a los Vocales del Consejo de Administración.", theme:'ley_puertos' },
+  { q:"¿Cuánto tiempo da derecho a permanecer atracado el pago de la tasa T-4?", opts:["1 mes desde su entrada","30 días hábiles","6 meses con prórroga de 1 mes","Plazo máximo 1 mes con prórroga de 6 meses"], correct:0, explanation:"El pago de la T-4 da derecho a permanecer en el puerto atracado durante 1 mes desde la entrada.", theme:'ley_puertos' },
+  { q:"El servicio de remolque portuario consiste en:", opts:["Operación náutica de ayuda a maniobra siguiendo instrucciones del armador","Operación náutica de ayuda a maniobra siguiendo instrucciones del capitán, mediante remolcadores, en aguas de la zona de servicio del puerto","Operación en aguas soberanas españolas con cualquier buque","Operación fuera de la zona de servicio"], correct:1, explanation:"El servicio de remolque portuario es la operación náutica de ayuda a la maniobra de un buque, siguiendo instrucciones de su capitán, mediante remolcadores, en las aguas de la zona de servicio del puerto.", theme:'ley_puertos' },
+  { q:"¿Quién es el punto de contacto nacional para la protección marítima y portuaria?", opts:["Autoridad de Protección Portuaria","Secretaría General de Transportes del Ministerio de Fomento","Puertos del Estado","Ministerio del Interior"], correct:1, explanation:"La Secretaría General de Transportes del Ministerio de Fomento es el punto de contacto nacional para la protección marítima y portuaria.", theme:'proteccion' },
+  { q:"Las prácticas de protección del puerto se realizan:", opts:["Cada año y como máximo dos años","Al menos una vez al año","Al menos una vez cada 6 meses y como máximo dos años","Sin plazo determinado"], correct:1, explanation:"Las prácticas de protección del puerto deben realizarse al menos una vez al año.", theme:'proteccion' },
+  { q:"¿Quién designa al oficial de protección del puerto?", opts:["La autoridad de protección portuaria","El Ministerio del Interior","La autoridad nacional competente para la protección marítima","A y C son correctas"], correct:3, explanation:"El oficial de protección del puerto puede ser designado tanto por la autoridad de protección portuaria como por la autoridad nacional competente para la protección marítima.", theme:'proteccion' },
+  { q:"El orden de preferencia entre señales de circulación en zona portuaria es:", opts:["Agentes, semáforos, marcas viales y señales verticales","Agentes, señalización circunstancial, semáforos, señales verticales y marcas viales","Señalización circunstancial, agentes, semáforos averiados, señales verticales y marcas viales","Ninguna es correcta"], correct:1, explanation:"El orden de preferencia es: señales y órdenes de agentes, señalización circunstancial, semáforos, señales verticales y marcas viales.", theme:'orc' },
+  { q:"El artículo 18.4 de la ORC prohíbe:", opts:["El exceso de velocidad","La utilización durante la conducción de dispositivos de telefonía móvil u otros medios de comunicación, salvo manos libres","No llevar cinturón de seguridad","Aparcar en zonas reservadas"], correct:1, explanation:"El Art. 18.4 de la ORC prohíbe el uso durante la conducción de dispositivos de telefonía móvil y cualquier otro medio de comunicación, excepto cuando sea sin emplear las manos ni auriculares.", theme:'orc' },
+  { q:"La filiación y datos necesarios para una denuncia por tráfico están en el:", opts:["Art. 47.3 ORC","Art. 48.4 ORC","Art. 50.2 ORC","Art. 45.1 ORC"], correct:1, explanation:"Los datos requeridos para las denuncias de tráfico en zona portuaria se encuentran en el Art. 48.4 de la ORC.", theme:'orc' },
+  { q:"¿Qué artículo regula el atraque de buques sin autorización en el Reglamento de Explotación y Policía?", opts:["Art. 7","Art. 15","Art. 20","Art. 25"], correct:2, explanation:"El Art. 20 del Reglamento de Explotación y Policía regula el atraque de buques sin autorización.", theme:'reglamento' },
+  { q:"¿Cuándo se obliga a los barcos a trabajar en días festivos según el Reglamento?", opts:["En la carga/descarga de explosivos o congestión de muelles","En caso de temporal con riesgos","A y B son correctas","La Dirección se reserva ese derecho sin reclamación"], correct:2, explanation:"Se puede obligar a trabajar en festivos tanto en carga/descarga de explosivos o congestión de muelles (A) como en caso de temporal con riesgos (B).", theme:'reglamento' },
+  { q:"Los recursos económicos de Puertos del Estado incluyen:", opts:["Solo productos de su patrimonio","El 4% de los ingresos de las AAPP en concepto de tasas (2% en Baleares, Canarias, Ceuta, Melilla y Sevilla)","Solo ingresos por actividades comerciales","Solo aportaciones del Fondo de Compensación Portuario"], correct:1, explanation:"Entre los recursos económicos de Puertos del Estado está el 4% de los ingresos devengados por las AAPP en concepto de tasas, siendo el 2% para las ubicadas en archipiélagos de Baleares y Canarias, y en Ceuta, Melilla y Sevilla.", theme:'ley_puertos' },
+  { q:"¿Qué funciones tiene Puertos del Estado respecto a la estadística?", opts:["Gozar de libre acceso a zonas de siniestro","Disponibilidad de servicios de practicaje y remolque","Otorgamiento de concesiones de navegación marítima","Elaborar las estadísticas de tráfico y otras materias de interés para el sistema portuario"], correct:3, explanation:"Entre las funciones de Puertos del Estado está elaborar las estadísticas de tráfico y de otras materias de interés para el sistema portuario.", theme:'ley_puertos' },
+  { q:"Las autorizaciones de dominio público portuario para bienes inmuebles son por plazo:", opts:["Superior a 3 años","Superior a 75 años cuando se hayan ejecutado niveles de inversión comprometidos con mínimo del 20%","No superior a 3 años","Superior a 75 años sin condiciones"], correct:1, explanation:"Los bienes inmuebles del dominio público portuario pueden otorgarse en concesión por plazo superior a 75 años cuando se hayan ejecutado los niveles de inversión comprometidos, con un mínimo del 20% de la inversión inicial.", theme:'ley_puertos' },
+  { q:"¿Cuándo debe convocarse concurso para otorgar concesiones en dominio público portuario?", opts:["Para concesiones de servicios portuarios abiertos al público","Para terminales de pasajeros de uso particular con varias solicitudes de interés","Para concesiones de lonjas pesqueras","Todas son correctas"], correct:3, explanation:"Deben convocarse concursos en los tres supuestos: servicios portuarios abiertos, terminales de pasajeros con varias solicitudes, y lonjas pesqueras.", theme:'ley_puertos' },
+  { q:"¿Qué es la autoprestación en servicios portuarios?", opts:["Integración de servicios portuarios","Cuando el concesionario se presta a sí mismo los servicios","Cuando una naviera usa personal embarcado propio sin contrato con terceros","B y C son correctas"], correct:3, explanation:"La autoprestación incluye cuando el concesionario se presta a sí mismo los servicios (B) y cuando una compañía naviera usa personal embarcado propio sin contratos con terceros (C).", theme:'ley_puertos' },
+  { q:"Los servicios comerciales portuarios se prestan en régimen de:", opts:["Concurrencia","Concurso","Subasta","Todas son correctas"], correct:0, explanation:"Los servicios comerciales en el ámbito portuario se prestan en régimen de libre concurrencia.", theme:'ley_puertos' },
+  { q:"Las tasas portuarias son:", opts:["Tasa de utilización, ayudas a la navegación, actividad y utilización","Tasa de ocupación, actividad, utilización y ayudas a la navegación","Tasa de recepción, actividad, utilización y ayudas a la navegación","Tasa de actividad, pesqueros, utilización y ayudas a la navegación marítima"], correct:1, explanation:"Las tasas portuarias son: tasa de ocupación, tasa de actividad, tasa de utilización y tasa de ayudas a la navegación.", theme:'ley_puertos' },
+  { q:"El Registro de Buques y Empresas Navieras es un registro de carácter:", opts:["Estatutario","Administrativo","Permanente","Ninguna es correcta"], correct:1, explanation:"El Registro de Buques y Empresas Navieras es un registro privado de carácter administrativo.", theme:'ley_puertos' },
+  { q:"¿Quién autoriza a las navieras españolas para contratar buques extranjeros en cabotaje cuando no hay españoles disponibles?", opts:["Ministerio de Fomento","Capitanía Marítima","Dirección General de la Marina Mercante","Conjuntamente Fomento e Interior"], correct:2, explanation:"La Dirección General de la Marina Mercante autoriza a las navieras españolas a contratar buques extranjeros para cabotaje cuando no hay buques españoles disponibles.", theme:'ley_puertos' },
+  { q:"¿Cuándo puede levantarse la prohibición de usos en instalaciones de señalización marítima fuera de 100 metros de la ribera?", opts:["Puertos del Estado previo informe favorable de la AP","Ministro de Fomento previo informe de Puertos del Estado","Ministro de Fomento previo informe de Economía y Hacienda","A es correcta cuando el informe sea elevado al Ministerio de Fomento"], correct:1, explanation:"El Ministro de Fomento (actual Ministro de Transportes) puede levantar la prohibición previo informe favorable de Puertos del Estado.", theme:'ley_puertos' },
+  { q:"¿Cuándo hay que avisar al Capitán Marítimo en un derrame de producto corrosivo?", opts:["Siempre en primer lugar","Cuando el vertido llegue al mar","Cuando el vertido llegue al alcantarillado","Cuando haya heridos"], correct:1, explanation:"Se avisará al Capitán Marítimo cuando el vertido llegue al mar. Si llega al alcantarillado se avisa a la Autoridad Competente correspondiente.", theme:'reglamento' },
+  { q:"En el procedimiento ante un incendio en cisterna de MMPP inflamable, la ubicación del personal actuante debe ser:", opts:["A sotavento del incendio","A barlovento del incendio","A 100 metros de distancia independientemente del viento","En el punto más elevado disponible"], correct:1, explanation:"El personal actuante debe situarse siempre a barlovento del incendio para evitar los humos y gases tóxicos.", theme:'mmpp' },
+  { q:"¿Qué organismo se encarga de organizar la respuesta externa a un incendio con mercancías peligrosas en puerto?", opts:["La propia Autoridad Portuaria","El SEIB 112","La Guardia Civil","Salvamento Marítimo"], correct:1, explanation:"El SEIB 112 (Servicio de Emergencias de les Illes Balears) es quien organiza la respuesta externa a las incidencias graves en el puerto.", theme:'reglamento' },
+  { q:"¿Cuándo se activa el PEI (Plan de Emergencias Interior) portuario?", opts:["Automáticamente ante cualquier incendio","Cuando el Director de la Emergencia lo considere necesario, tras recibir información del Centro de Control","Solo cuando lo solicite el SEIB 112","Cuando lo ordene el Capitán Marítimo"], correct:1, explanation:"El Director de la Emergencia activa el PEI cuando lo considera necesario, asumiendo el mando único y movilizando los equipos de emergencia, informando al SEIB 112.", theme:'reglamento' },
+  { q:"Las operaciones sobre escombros en zona de depósito portuario se regulan en el artículo:", opts:["Art. 43","Art. 114.1.D) Ley de Puertos","Art. 114.1.A) TRLPEMM","Art. 306.2.e) TRLPEMM"], correct:1, explanation:"El abandono de escombros en el depósito de la zona portuaria está tipificado en el Art. 114.1.D) de la Ley de Puertos.", theme:'ley_puertos' },
+  { q:"Si durante una ronda detecta obras sin autorización en el puerto deportivo y los operarios ya están trabajando, debe:", opts:["Paralizarlas y esperar autorización, formulando boletín de denuncia por obras sin autorización","Dejarles continuar hasta tener la autorización","Avisar solo a mantenimiento","Permitirlo si es reparación de emergencia"], correct:0, explanation:"Debe paralizar las obras y formular el correspondiente boletín de denuncia por obras sin autorización (Art. 57 del Reglamento de Servicio y Policía), tipificado en el 306.2.e) del TRLPEMM.", theme:'reglamento' },
+  { q:"¿Cuál es el procedimiento si la reparación de obras sin autorización responde a una emergencia?", opts:["Detener igualmente las obras","No detener las obras; hacer que realicen el procedimiento de emergencia OCAE y redactar informe","Llamar al 112 y esperar","Formular denuncia y luego permitir continuar"], correct:1, explanation:"Si la reparación es una emergencia, no se detendrán las obras pero se indicará que realicen el procedimiento de emergencia OCAE y se redactará el informe correspondiente.", theme:'reglamento' },
+  { q:"En un accidente de tráfico leve en zona portuaria con daños a instalaciones, ¿qué boletín se formula?", opts:["Art. 18 ORC","Art. 66 Reglamento, tipificado en Art. 306.1.a) TRLPEMM","Art. 43 Reglamento","Art. 75 Reglamento"], correct:1, explanation:"Se formula boletín por daños a instalaciones portuarias según el Art. 66 del Reglamento de Servicio y Policía, tipificado en el Art. 306.1.a) del TRLPEMM.", theme:'reglamento' },
+  { q:"La documentación obligatoria relativa a una embarcación incluye:", opts:["Solo el abanderamiento y matrícula","Abanderamiento, matrícula, registro, patente de navegación, licencia o Rol, certificados y póliza de seguros","Solo la póliza de seguros y matrícula","DNI del patrón y matrícula"], correct:1, explanation:"La documentación obligatoria de la embarcación incluye: abanderamiento, matrícula, registro, patente de navegación, licencia de navegación o Rol debidamente despachado, certificados reglamentarios y póliza de seguros.", theme:'reglamento' },
+  { q:"Si al fondear en el espejo de agua detectas que hay una embarcación con una aguada, la actuación es:", opts:["Denunciarla inmediatamente","Verificar si está autorizada a fondear en ese punto y si está, comprobar que tenga autorización para el atraque","Avisar al Capitán Marítimo directamente","Ordenar su desalojo inmediato"], correct:1, explanation:"Primero verificas si la embarcación está autorizada a fondear. Si está autorizada para el atraque, compruebas si tiene autorización para realizar la aguada. Si no está autorizada para atracar, se denuncia y ordena el inmediato desalojo.", theme:'reglamento' },
+  { q:"¿Qué artículo de la Ley 31/1995 define la Prevención de Riesgos Laborales?", opts:["El conjunto de actividades para evitar o disminuir riesgos derivados del trabajo","El conjunto de daños sufridos a consecuencia del trabajo","La norma que regula los equipos de protección","El reglamento de seguridad en construcción"], correct:0, explanation:"La Prevención según la Ley 31/1995 es el conjunto de actividades o medidas adoptadas en todas las fases de la empresa para evitar o disminuir los riesgos derivados del trabajo.", theme:'reglamento' },
+  { q:"¿Cuándo produce efecto retroactivo una disposición sancionadora?", opts:["Cuando afecta a la empresa privada","En cuanto favorezca al presunto infractor, tanto en tipificación como en sanción y plazos de prescripción","Siempre que así lo determine la autoridad competente","Nunca produce efecto retroactivo"], correct:1, explanation:"Las disposiciones sancionadoras producen efecto retroactivo cuando favorezcan al presunto infractor o infractor, tanto en tipificación como en sanción y plazos de prescripción.", theme:'reglamento' },
+  { q:"El plazo de prescripción de sanciones leves según la Ley 40/2015 es de:", opts:["1 año","3 meses","6 meses","Ninguna es correcta"], correct:0, explanation:"Según la Ley 40/2015, las sanciones leves prescriben en 1 año.", theme:'ley_puertos' },
+  { q:"El plazo de prescripción de las sanciones del Art. 40/2015 comienza a contarse:", opts:["El día en que se tramite la denuncia","En infracciones continuadas, desde que finalizó la conducta infractora","El día en que la infracción se cometió","El día siguiente a aquel en que sea ejecutable la resolución"], correct:3, explanation:"El plazo de prescripción de las sanciones comienza el día siguiente a aquel en que sea ejecutable la resolución por la que se impone la sanción o haya transcurrido el plazo para recurrirla.", theme:'ley_puertos' },
+  { q:"La Conformidad OCAE (Coordinación de Actividades Empresariales) es necesaria para:", opts:["Solo trabajos de larga duración","Solo obras de nueva construcción","Cualquier actividad laboral en zona portuaria restringida, independientemente de la duración","Solo actividades de más de 3 trabajadores"], correct:2, explanation:"La conformidad OCAE es necesaria para cualquier actividad laboral en zona de acceso restringido, sea de corta o larga duración, además de la homologación de la empresa.", theme:'reglamento' },
+  { q:"Según la ORC, ¿cuál es el orden de preferencia entre señales de tráfico?", opts:["Señales verticales, agentes, semáforos, marcas viales","Agentes de autoridad, señalización circunstancial, semáforos, señales verticales, marcas viales","Marcas viales, semáforos, agentes, señales verticales","Semáforos, agentes, marcas viales, señales verticales"], correct:1, explanation:"El orden de prelación en la ORC es: señales y órdenes de los agentes, señalización circunstancial, semáforos, señales verticales y marcas viales.", theme:'orc' },
+  { q:"¿Qué documentación solicita la policía portuaria a un vehículo tractora que llega al control de acceso para embarcar en Balearia sin viaje el conductor?", opts:["Tarjeta de embarque y DNI","Conformidad OCAE, homologación de la empresa; no se solicita tarjeta de embarque al no ser pasajero","Solo el DNI del conductor","Solo la documentación del vehículo"], correct:1, explanation:"Al no viajar el conductor, es actividad laboral, no embarque. No se exige tarjeta de embarque, pero la empresa debe estar homologada en la OCAE y tener la conformidad de acceso para esa actividad (Arts. 6 y 7 de la Ordenanza).", theme:'reglamento' },
+  { q:"¿Qué artículo del Reglamento regula los depósitos incorrectos?", opts:["Art. 28","Art. 43","Art. 57","Art. 65"], correct:1, explanation:"El Art. 43 del Reglamento regula los depósitos incorrectos de mercancías en zona portuaria.", theme:'reglamento' },
+  { q:"¿Qué es la Capitanía Marítima?", opts:["Órgano de las Autoridades Portuarias","Servicio que existe en puertos donde se desarrolla un nivel de actividades de navegación o lo requieran las condiciones de tráfico, seguridad o protección marítima","Departamento de Puertos del Estado","Organismo autónomo del Ministerio del Interior"], correct:1, explanation:"La Capitanía Marítima existe en aquellos puertos, o grupos de puertos, en los que se desarrolle un determinado nivel de actividades de navegación o lo requieran las condiciones de tráfico, seguridad o protección marítima.", theme:'ley_puertos' },
+  { q:"La fuga de líquido corrosivo de una cisterna en muelle: primera actuación del policía portuario:", opts:["Taponar la fuga inmediatamente","Comunicar al responsable directo o jefe de servicio dando todos los datos y seguir sus instrucciones","Llamar directamente al 112","Acordonar sin comunicar nada"], correct:1, explanation:"La primera actuación siempre es comunicar la incidencia al responsable directo o jefe de servicio, proporcionando todos los datos disponibles sobre la situación y seguir sus instrucciones.", theme:'reglamento' },
+  { q:"Un velero privado atracado sin autorización en el Muelle Comercial: primera actuación:", opts:["Denunciar sin más trámites","Entrevistarse con el patrón para comprobar si tiene emergencia, y si no, requerir autorización de atraque","Requerir al patrón que se vaya inmediatamente","Avisar al Capitán Marítimo"], correct:1, explanation:"Primero se entrevista con el patrón para verificar si existe algún tipo de emergencia. Si no la hay, se requiere la autorización de atraque al propio patrón y se consulta con el Dpto. de Operaciones Portuarias de la APB.", theme:'reglamento' },
+  { q:"¿Quién controla en el ámbito portuario el cumplimiento de la normativa sobre mercancías peligrosas, seguridad contra terrorismo y prevención de emergencias?", opts:["Ministerio del Interior","Puertos del Estado","Autoridad Portuaria","Todas son correctas"], correct:2, explanation:"La Autoridad Portuaria controla el cumplimiento de la normativa que afecte a la admisión, manipulación y almacenamiento de mercancías peligrosas, y los sistemas de seguridad y protección, sin perjuicio de las competencias de otras administraciones.", theme:'ley_puertos' },
+  { q:"¿Qué órgano de la Autoridad Portuaria establece las directrices generales para la gestión de los servicios?", opts:["Director","Consejo de Administración","Presidente de Puertos del Estado","Ninguna es correcta"], correct:1, explanation:"Corresponde al Consejo de Administración establecer las directrices generales para la gestión de los servicios de la Autoridad Portuaria.", theme:'ley_puertos' },
+  { q:"¿En qué supuesto se puede pedir apoyo a la Guardia Civil durante una actuación de la Policía Portuaria?", opts:["Siempre que haya conflicto","Cuando el implicado se niegue a identificarse","En todos los casos de denuncia","Solo en incendios"], correct:1, explanation:"Se puede pedir apoyo a la Guardia Civil (cuerpos de seguridad del Estado) cuando el implicado se niega a identificarse, ya que la Policía Portuaria no tiene facultades de identificación coactiva.", theme:'reglamento' },
+  { q:"Las infracciones tipificadas en el Art. 306.1.a) del TRLPEMM son de carácter:", opts:["Leve","Grave","Muy grave","Depende de la cuantía del daño"], correct:1, explanation:"Las infracciones del Art. 306.1.a) del TRLPEMM son infracciones graves.", theme:'ley_puertos' },
+];}
+
+function getExam2() {
+  // Different exam, similar structure with different questions
+  return [
+  { q:"¿Cuál es el objeto principal del TRLPEMM (RDL 2/2011)?", opts:["Regular solo los puertos deportivos","Ordenar el régimen jurídico del sistema portuario estatal y de la Marina Mercante","Establecer las normas de tráfico marítimo internacional","Regular las aduanas portuarias"], correct:1, explanation:"El TRLPEMM tiene por objeto ordenar el régimen jurídico del sistema portuario de titularidad estatal y de la Marina Mercante.", theme:'ley_puertos' },
+  { q:"¿Qué organismos integran el sistema portuario estatal?", opts:["Puertos del Estado y las Autoridades Portuarias","Puertos del Estado y Capitanías Marítimas","Las Autoridades Portuarias y los puertos deportivos","Solo Puertos del Estado"], correct:0, explanation:"El sistema portuario estatal está integrado por Puertos del Estado (organismo público) y las Autoridades Portuarias.", theme:'ley_puertos' },
+  { q:"¿Cuál es la naturaleza jurídica de las Autoridades Portuarias?", opts:["Ministerios","Entidades de Derecho Público con personalidad jurídica y patrimonio propios","Empresas públicas","Organismos autónomos del Estado"], correct:1, explanation:"Las Autoridades Portuarias son entidades de Derecho Público con personalidad jurídica propia y patrimonio propio, dependientes del Ministerio de Fomento.", theme:'ley_puertos' },
+  { q:"Los puertos de interés general deben cumplir alguna de estas circunstancias, EXCEPTO:", opts:["Que se efectúen actividades comerciales marítimas internacionales","Que su zona de influencia afecte a más de una CCAA","Que sirvan a industrias estratégicas para la economía nacional","Que tengan más de 10 atraques habilitados"], correct:3, explanation:"El número de atraques no es criterio para considerar un puerto de interés general. Los criterios son: actividad internacional, zona de influencia pluriautonómica, carácter estratégico o volumen relevante de actividad comercial.", theme:'ley_puertos' },
+  { q:"La zona de servicio de un puerto incluye:", opts:["Solo las superficies de agua","Los espacios de tierra y de agua necesarios para el desarrollo de actividades portuarias y las de señalización marítima","Solo los muelles y pantalanes","Los terrenos declarados de interés general"], correct:1, explanation:"La zona de servicio comprende los espacios de tierra y de agua necesarios para la ejecución de actividades portuarias, los de señalización marítima y los que sean precisos para el desarrollo de las actividades que puedan declararse de interés general.", theme:'ley_puertos' },
+  { q:"¿Quién aprueba los planes de utilización de los espacios portuarios?", opts:["El Ayuntamiento donde se ubique el puerto","El Ministerio de Fomento, a propuesta de Puertos del Estado","La Autoridad Portuaria correspondiente","La Comunidad Autónoma"], correct:1, explanation:"Los planes de utilización de los espacios portuarios son aprobados por el Ministerio de Fomento (ahora Ministerio de Transportes), a propuesta de Puertos del Estado previo informe de la AP.", theme:'ley_puertos' },
+  { q:"¿Cuál es el plazo máximo de una concesión en dominio público portuario?", opts:["30 años","50 años","75 años","100 años"], correct:2, explanation:"El plazo máximo de las concesiones en el dominio público portuario es de 75 años cuando se han ejecutado los niveles de inversión comprometidos con un mínimo del 20% de la inversión inicial.", theme:'ley_puertos' },
+  { q:"Las autorizaciones de dominio público portuario para bienes muebles son por:", opts:["Plazo no superior a 3 años","Plazo superior a 75 años","Plazo de 1 año renovable","Plazo indefinido"], correct:0, explanation:"Las autorizaciones para bienes muebles son por plazo no superior a 3 años, mientras que las de bienes inmuebles pueden ser por plazos superiores.", theme:'ley_puertos' },
+  { q:"El canon de ocupación en dominio público portuario lo fija:", opts:["El Ayuntamiento","La Autoridad Portuaria según el TRLPEMM","El Ministerio de Hacienda","Puertos del Estado"], correct:1, explanation:"La Autoridad Portuaria fija el canon de ocupación en el dominio público portuario de acuerdo con lo establecido en el TRLPEMM.", theme:'ley_puertos' },
+  { q:"¿Qué organismos colaboran con las Autoridades Portuarias en materia de seguridad?", opts:["Solo la Policía Nacional","Ministerio del Interior y sus cuerpos dependientes","Solo la Guardia Civil","Todos los cuerpos y fuerzas de seguridad del Estado"], correct:3, explanation:"Las actuaciones en materia de seguridad en el ámbito portuario se realizan en colaboración con el Ministerio del Interior, incluyendo todos los cuerpos y fuerzas de seguridad.", theme:'proteccion' },
+  { q:"¿Cuántos niveles de protección existen según el Código ISPS?", opts:["2","3","4","5"], correct:1, explanation:"El Código ISPS establece 3 niveles de protección: Nivel 1 (normal), Nivel 2 (heightened/elevado) y Nivel 3 (exceptional/excepcional).", theme:'proteccion' },
+  { q:"¿Qué siglas corresponden al Plan de Protección del Puerto?", opts:["PPP","PEI","PPB","PSP"], correct:0, explanation:"El PPP son las siglas del Plan de Protección del Puerto (Port Protection Plan o Plan de Protección Portuaria).", theme:'proteccion' },
+  { q:"La admisión de mercancías peligrosas en la zona de servicio le corresponde al:", opts:["Director del puerto","Capitán del Puerto","Oficial del Puerto","Jefe de Seguridad"], correct:1, explanation:"La admisión de mercancías peligrosas en la zona de servicio del puerto corresponde al Capitán del Puerto.", theme:'mmpp' },
+  { q:"¿Qué documentos se adjuntan a la solicitud de admisión de MMPP?", opts:["Certificado de arrumazón","Certificado de la autoridad competente sobre la cisterna","Certificación de que el vehículo cumple las normas ADR, TPC, TPF o RID","Todas son correctas"], correct:3, explanation:"A la solicitud de admisión de MMPP deben adjuntarse todos los documentos mencionados: certificado de arrumazón, certificado de la autoridad competente sobre la cisterna, y certificación de cumplimiento de normas ADR/TPC/TPF/RID.", theme:'mmpp' },
+  { q:"Durante la carga/descarga de mercancías de la Clase 1 (Explosivos) debe estar presente:", opts:["Solo el operador del muelle","Solo el oficial de protección","Solo la Policía Portuaria","Todas las anteriores"], correct:3, explanation:"Durante la carga y descarga de mercancías de Clase 1 (Explosivos) deben estar presentes el operador del muelle o terminal, el oficial de protección y la Policía Portuaria.", theme:'mmpp' },
+  { q:"¿Cuándo se convocan concursos para explosivos División 1.1 en cantidades >400 kg por escala?", opts:["La designación del lugar la realiza el Ministerio de Obras Públicas","La designación la hace el Ministerio del Interior","La designación la hace el Ministerio de Defensa","A propuesta razonada del organismo portuario"], correct:3, explanation:"La designación del lugar especialmente apartado en el puerto para operaciones con explosivos División 1.1 en cantidades superiores a 400 kg por escala se realiza a propuesta razonada del organismo portuario.", theme:'mmpp' },
+  { q:"Las formalidades aduaneras de contenedores con materiales radiactivos requieren previo conocimiento de:", opts:["Capitán del Puerto y Operador del Muelle","Director y Operador del Muelle","Director del Puerto y Capitán del Puerto","Jefe de Seguridad y responsable del transporte"], correct:3, explanation:"Las formalidades aduaneras de contenedores con materiales radiactivos se efectúan previo conocimiento del Jefe de Seguridad y de la persona responsable del transporte.", theme:'mmpp' },
+  { q:"Las sustancias de la Clase 1 que NO presentan ningún riesgo considerable son:", opts:["División 1.1","División 1.2","División 1.4","División 1.5"], correct:2, explanation:"La División 1.4 de la Clase 1 comprende las sustancias y artículos que no presentan ningún riesgo considerable, ya que solo pueden originar una pequeña explosión en caso de ignición.", theme:'mmpp' },
+  { q:"¿Cuándo puede obligarse a los buques a trabajar en horas extraordinarias?", opts:["En la carga/descarga de explosivos o congestión de muelles","En caso de temporal que implique riesgos","A y B son correctas","La Dirección se reserva el derecho sin posibilidad de reclamación"], correct:2, explanation:"Se puede obligar a trabajar en horas extraordinarias tanto en la carga/descarga de explosivos o congestión de muelles como en caso de temporal que implique riesgos.", theme:'reglamento' },
+  { q:"La superficie de la T-5 (tasa de embarcaciones deportivas) se calcula como:", opts:["0,4 × E × M × P","0,124 × E × M","El resultado de eslora total × manga","El resultado de eslora total × puntal"], correct:2, explanation:"La superficie ocupada según la tasa T-5 es el resultado del producto de la eslora total de la embarcación por su manga.", theme:'ley_puertos' },
+  { q:"¿Qué subsecciones se establecen en la tasa de actividad?", opts:["Tasa de utilización","Tasa de actividad","Tasa de pesca fresca","Tasa del buque"], correct:3, explanation:"En la tasa del buque es donde se establecen las subsecciones de tasas.", theme:'ley_puertos' },
+  { q:"El recusado niega la causa de recusación: el superior resuelve en:", opts:["2 días","3 días","4 días","24 horas tras comunicación previa"], correct:1, explanation:"Si el recusado niega la causa de recusación, el superior jerárquico resolverá en el plazo de 3 días.", theme:'ley_puertos' },
+  { q:"La Ley 31/1995 de PRL no se aplica a:", opts:["Limpieza del hogar","Fuerzas Armadas y Guardia Civil","Trabajadores de construcción","Servicios operativos de protección civil en casos de grave riesgo"], correct:3, explanation:"La Ley 31/1995 no es de aplicación a los servicios operativos de protección civil y peritaje forense en casos de grave riesgo. Las Fuerzas Armadas también tienen su propia normativa.", theme:'reglamento' },
+  { q:"La paralización acordada por empresa y autoridad laboral debe anularse o rectificarse en:", opts:["12 horas","Dos días","24 horas","Un día"], correct:2, explanation:"La paralización acordada por la empresa y la autoridad laboral debe anularse o rectificarse en el plazo de 24 horas.", theme:'reglamento' },
+  { q:"Según el Art. 22 de la Constitución, se reconoce:", opts:["El derecho de asociación","Asociaciones que persigan fines tipificados como delito","Asociaciones secretas y paramilitares","Ninguna es correcta"], correct:0, explanation:"El Art. 22 de la Constitución Española reconoce el derecho de asociación, prohibiendo las que persigan fines o empleen medios tipificados como delito, y las secretas y paramilitares.", theme:'reglamento' },
+  { q:"¿Qué constituyen los fines de la Ley de Seguridad Ciudadana (LO 4/2015)?", opts:["La protección del libre ejercicio de los derechos fundamentales y libertades públicas","La garantía del normal funcionamiento de las empresas privadas","La preservación de la seguridad y la convivencia pública","A y C son correctas"], correct:3, explanation:"Los fines de la Ley de Seguridad Ciudadana incluyen la protección del libre ejercicio de derechos fundamentales (A) y la preservación de la seguridad y convivencia pública (C).", theme:'reglamento' },
+  { q:"La detención no puede durar más de:", opts:["Estrictamente necesario con máximo de 72 horas","72 horas","48 horas","Estrictamente necesario con máximo de 24 horas"], correct:0, explanation:"La detención no puede durar más del tiempo estrictamente necesario para las averiguaciones tendentes al esclarecimiento de los hechos y en el plazo máximo de 72 horas.", theme:'reglamento' },
+  { q:"¿Qué principio general rige la aplicación de medidas de prevención según el Art. 15 de la Ley 31/1995?", opts:["Evitar los riesgos","Evaluar los riesgos que se puedan evitar","Combatir los riesgos en su origen","Todos son principios generales de prevención"], correct:3, explanation:"Todos son principios generales de prevención según el Art. 15 de la Ley 31/1995: evitar riesgos, evaluar los inevitables, combatirlos en su origen, adaptar el trabajo a la persona, etc.", theme:'reglamento' },
+  { q:"Los documentos de los interesados dirigidos a las Administraciones Públicas pueden presentarse en:", opts:["Solo el registro electrónico del organismo destinatario","Las oficinas de Correos, representaciones diplomáticas o en los registros electrónicos de cualquier Administración","Solo las sedes físicas del organismo destinatario","Solo a través de las jefaturas de Policía Nacional"], correct:1, explanation:"Los documentos pueden presentarse en el registro electrónico de cualquier Administración sujeta a la Ley 39/2015, en las oficinas de Correos, representaciones diplomáticas u oficinas consulares en el extranjero.", theme:'reglamento' },
+  { q:"¿Cuándo el consignatario comunica la próxima entrada de un buque?", opts:["Por escrito a la Comisaría del Puerto (servicio de explotación)","Al Centro de Control","Al Director del Puerto","Al Capitán Marítimo"], correct:0, explanation:"El consignatario comunica la próxima entrada de cada buque a la Comisaría del Puerto, servicio de explotación, por escrito.", theme:'reglamento' },
+  { q:"La programación conjunta de operaciones del puerto se realiza:", opts:["Con carácter semanal revisable","Con la mayor antelación posible y preferentemente con carácter semanal y revisable","Con carácter semanal","Indistintamente"], correct:1, explanation:"La programación conjunta de operaciones del puerto se realiza con la mayor antelación posible y preferentemente con carácter semanal y revisable.", theme:'reglamento' },
+  { q:"¿Quién es responsable de las averías, pérdidas o deterioro de las mercancías manipuladas?", opts:["El estibador","El servicio de manipulación de mercancías","Los policías portuarios","El contratista de faena"], correct:1, explanation:"El servicio de manipulación de mercancías es el responsable de toda avería, pérdida o deterioro de las mercancías manipuladas.", theme:'reglamento' },
+  { q:"El Celador-Guardamuelles está regulado en el Reglamento en el artículo:", opts:["Art. 27","Art. 28","Art. 29","Art. 30"], correct:1, explanation:"Los Celadores-Guardamuelles están regulados en el Art. 28 del Reglamento de Servicio y Policía.", theme:'reglamento' },
+  { q:"¿Qué velocidad máxima rige en zona portuaria según el Reglamento?", opts:["10 km/h","20 km/h","30 km/h","40 km/h"], correct:2, explanation:"La velocidad máxima en zona portuaria está regulada en el Art. 28 del Reglamento y suele ser 30 km/h en zonas generales.", theme:'orc' },
+  { q:"¿Quién aprueba el reconocimiento de obras e instalaciones según el Art. 93 del TRLPEMM 2/2011?", opts:["El Director","El Presidente","El Consejo de Administración","Todas son correctas"], correct:3, explanation:"Según el Art. 93 del TRLPEMM 2/2011, el reconocimiento de las obras e instalaciones puede ser aprobado por el Director, el Presidente o el Consejo de Administración según el caso.", theme:'ley_puertos' },
+  { q:"Las actuaciones accidentales en puerto se ponen en conocimiento de:", opts:["Director del Puerto","Dirección del Puerto","Del Comisario de Explotación Portuaria","Al Jefe de Servicio"], correct:3, explanation:"Las actuaciones accidentales en zona portuaria se ponen en conocimiento del Jefe de Servicio de guardia.", theme:'reglamento' },
+  { q:"Los usos portuarios comprenden:", opts:["Usos comerciales","Usos pesqueros","Usos náutico-deportivos","Todas son correctas"], correct:3, explanation:"Los usos portuarios incluyen usos comerciales, pesqueros, náutico-deportivos, y complementarios o auxiliares de los anteriores.", theme:'ley_puertos' },
+  { q:"¿Qué artículo regula la velocidad máxima en zona portuaria?", opts:["Art. 27 Reglamento","Art. 28 Reglamento","Art. 29 Reglamento","Art. 18 ORC"], correct:1, explanation:"El Art. 28 del Reglamento regula la velocidad máxima en zona portuaria.", theme:'orc' },
+  { q:"El Consejo de Navegación y Puerto existe en puertos donde:", opts:["Haya más de 1000 trabajadores portuarios","Se desarrolle un determinado nivel de actividades de navegación o lo requieran las condiciones de tráfico, seguridad o protección marítima","Haya terminal de pasajeros internacional","Se presten todos los servicios portuarios"], correct:1, explanation:"El Consejo de Navegación y Puerto existe en aquellos puertos, o grupos de puertos, en los que se desarrolle un determinado nivel de actividades de navegación o lo requieran las condiciones de tráfico, seguridad o protección marítima.", theme:'ley_puertos' },
+  { q:"En puertos sin Consejo de Navegación y Puerto pueden existir:", opts:["Consejos Consultivos presididos por el Capitán Marítimo","Consejos de Navegación presididos por el Capitán Marítimo","Consejos de Navegación presididos por el Capitán de la Marina Mercante","Consejos presididos por el Ministerio de Fomento"], correct:1, explanation:"En puertos sin Consejo de Navegación y Puerto pueden existir Consejos de Navegación presididos por el Capitán Marítimo, como órganos de asistencia, información y colaboración.", theme:'ley_puertos' },
+  { q:"¿Cuándo un trabajador del taxi náutico circula a 20 pasajeros en un muelle desembarcando?", opts:["Es actividad libre","Debe tener autorización de la AP para la actividad y el servicio de taxi náutico debe estar controlado","Solo necesita seguro de la embarcación","No necesita ningún permiso especial"], correct:1, explanation:"El servicio de taxi náutico en zona portuaria requiere autorización de la AP y el servicio debe estar controlado por la policía portuaria.", theme:'reglamento' },
+  { q:"El Convenio MARPOL aplica a la recepción de desechos y residuos de los anexos:", opts:["I y V","I, II y V","I, IV o VI","I, IV, V o VI"], correct:3, explanation:"La recepción de desechos y residuos en puerto responde a los Anexos I, IV, V o VI del Convenio MARPOL 73/78.", theme:'mmpp' },
+  { q:"¿Qué servicio NO está incluido en el servicio al pasaje?", opts:["Embarque y desembarque de pasajeros","Carga y descarga de equipajes","Carga y descarga de vehículos en régimen de pasaje","Manejo de pasarelas y rampas de la AP con personal propio"], correct:3, explanation:"El servicio portuario de manejo de pasarelas, rampas y otros medios mecánicos de la Autoridad Portuaria cuando se efectúe con el propio personal de la misma NO está incluido en el servicio al pasaje.", theme:'ley_puertos' },
+  { q:"Las operaciones de depósito, remoción y traslado de mercancías tienen consideración de:", opts:["Servicios portuarios","Servicios comerciales que requieren autorización de la AP","B es correcta","Ninguna es correcta"], correct:1, explanation:"Las operaciones de entrega, depósito, remoción y traslado de mercancías que no estén incluidas en el servicio de manipulación son servicios comerciales que requieren autorización de la AP.", theme:'ley_puertos' },
+  { q:"¿Qué servicio portuario puede tener exenciones a su utilización?", opts:["Servicio de practicaje","Servicio al pasaje","Servicio de remolque portuario","Servicio de amarre y desamarre"], correct:0, explanation:"El servicio de practicaje puede tener exenciones, dispensas o limitaciones a su utilización obligatoria según las condiciones del puerto.", theme:'ley_puertos' },
+  { q:"¿Qué información aportan los rótulos de MMPP al policía portuario?", opts:["Solo el número de teléfono de emergencias","El tipo de mercancía peligrosa, clase, número ONU y riesgos","Solo el peso de la mercancía","Solo el destinatario"], correct:1, explanation:"Los rótulos de MMPP proporcionan información esencial: tipo de mercancía, clase, número ONU, riesgos específicos y medidas de actuación en caso de emergencia.", theme:'mmpp' },
+  { q:"¿Cuándo debe taponarse una fuga de producto corrosivo en zona portuaria?", opts:["Siempre inmediatamente","Si no representa peligro y según el tamaño de la fuga","Solo con el equipo de emergencias del 112","Nunca, siempre debe evacuarse primero"], correct:1, explanation:"Se intentará taponar la fuga solo si no representa un peligro y dependiendo del tamaño de la fuga. La seguridad del personal actuante es prioritaria.", theme:'reglamento' },
+  { q:"La superficie T-5 según el TRLPEMM se calcula:", opts:["0,4 × E × M × P","0,124 × E × M","Eslora total × manga","Eslora × puntal"], correct:2, explanation:"Según la tasa T-5, la superficie ocupada por el buque o embarcación es el resultado del producto de la eslora total por la manga de la embarcación.", theme:'ley_puertos' },
+  { q:"¿Quién es responsable de la seguridad en los servicios de practicaje?", opts:["El práctico exclusivamente","El capitán del buque exclusivamente","El práctico presta asesoramiento, pero la responsabilidad náutica sigue siendo del capitán","La Autoridad Portuaria"], correct:2, explanation:"El práctico asesora al capitán en las maniobras en aguas portuarias, pero la responsabilidad náutica de la maniobra sigue siendo del capitán del buque.", theme:'ley_puertos' },
+  { q:"En un accidente de tráfico en zona portuaria con vehículo perdiendo aceite, ¿qué se hace con el aceite derramado?", opts:["Se deja secar solo","Se cubre con arena o material absorbente y se señaliza la zona","Se limpia con agua","Se acordona sin más"], correct:1, explanation:"El aceite derramado en calzada debe señalizarse la zona con los medios disponibles y cubrirse con arena o material absorbente para evitar riesgos a otros conductores.", theme:'orc' },
+  { q:"Un vehículo aparcado en doble fila con conductor a bordo, primera actuación:", opts:["Denunciar directamente","Comunicar al conductor que debe circular; si no hace caso, se denuncia por desobediencia y estacionamiento en doble fila","Retirar con grúa","Señalizar y esperar"], correct:1, explanation:"Primero se comunica al conductor que debe circular; si hace caso, no hay más actuaciones; si no obedece, se denuncia por desobediencia y por estacionamiento en doble fila.", theme:'orc' },
+  { q:"Un vehículo aparcado sobre la acera sin conductor:", opts:["Solo se señaliza","Se denuncia y se retira con grúa","Se espera 30 minutos antes de actuar","Se avisa al propietario primero"], correct:1, explanation:"Un vehículo aparcado sobre la acera (sin conductor) se denuncia y se retira con la grúa.", theme:'orc' },
+  { q:"¿Cuándo se puede retirar un vehículo con grúa en zona portuaria?", opts:["Solo si bloquea muelles de carga","Si obstaculiza o crea peligro para la circulación","Solo con autorización judicial","Nunca, solo se denuncia"], correct:1, explanation:"Un vehículo puede ser retirado con grúa cuando obstaculiza o crea algún peligro para la circulación, siendo el orden de retirada según el grado en que dificulte la operativa portuaria.", theme:'orc' },
+  { q:"¿Cuál es la primera actuación si detectas una embarcación en llamas en el puerto deportivo?", opts:["Extinguir el incendio directamente","Confirmar la emergencia con personal de la APB presente y comunicar al responsable directo/jefe de servicio","Llamar al 112 como primera acción","Evacuar toda la zona sin comunicar nada"], correct:1, explanation:"Primero se confirma la emergencia con personal de la APB presente en el Puerto y se comunica al responsable directo o Jefe de Servicio para seguir sus instrucciones.", theme:'reglamento' },
+  { q:"En caso de embarcación en llamas que se desarrolla, ¿a quién NO se notifica?", opts:["Al SEIB 112","Al Capitán Marítimo y Salvamento Marítimo","Al Centro de Control","Al Ministerio del Interior directamente"], correct:3, explanation:"En caso de embarcación en llamas en puerto deportivo se notifica al SEIB 112, al Capitán Marítimo y Salvamento Marítimo, y al Centro de Control de la APB. No se contacta directamente con el Ministerio del Interior.", theme:'reglamento' },
+  { q:"Un polizón en un buque que llega al puerto: primera actuación de la Policía Portuaria:", opts:["Detener al polizón inmediatamente","Comunicar la incidencia al superior o jefe de servicio y recabar toda la información posible a través del capitán","Llamar directamente a la Policía Nacional","Impedir que el buque atraque"], correct:1, explanation:"Ante un polizón, la primera actuación es comunicar al superior o jefe de servicio y recabar toda la información a través del capitán del buque, incluyendo si es extranjero (Policía Nacional) o español (Guardia Civil).", theme:'reglamento' },
+  { q:"La homologación de empresa en la OCAE es necesaria para:", opts:["Solo las obras de construcción","Cualquier actividad laboral en zona de acceso restringido","Solo para más de 10 trabajadores","Solo para empresas de seguridad privada"], correct:1, explanation:"La homologación en la OCAE (Oficina de Coordinación de Actividades Empresariales) es necesaria para cualquier empresa que desarrolle actividades laborales en zonas de acceso restringido del puerto, según la Ordenanza de la APB.", theme:'reglamento' },
+  { q:"La venta ambulante en zona portuaria está prohibida por:", opts:["El Código de Comercio","El Art. 65 del Reglamento de la Comisión Administrativa de Puertos (Actividades Secundarias)","El Reglamento Municipal del Ayuntamiento","El TRLPEMM Art. 307"], correct:1, explanation:"La realización de venta ambulante sin la preceptiva autorización en zona portuaria se denuncia por el Art. 65 del Reglamento de la Comisión Administrativa de Puertos (Actividades Secundarias).", theme:'reglamento' },
+  { q:"¿Qué se decomisar si se detecta venta ambulante de objetos falsificados?", opts:["Solo los documentos del vendedor","Los productos y se formaliza mediante acta; además puede haber implicaciones de propiedad industrial/intelectual","Solo los objetos más valiosos","Nada, solo se denuncia al vendedor"], correct:1, explanation:"Se procede al decomiso de los productos y formalización del hecho mediante acta, detallando todo lo decomisado. Si son objetos falsificados, puede haber implicaciones de propiedad industrial/intelectual.", theme:'reglamento' },
+  { q:"Una embarcación de lista 6ª cargando pasajeros fuera de zona autorizada: artículos a denunciar:", opts:["Solo Art. 20 Reglamento de Explotación","Art. 20 Reglamento de Explotación + múltiples artículos del TRLPEMM 307.3","Solo el Art. 306 TRLPEMM","Solo el Art. 307.1 TRLPEMM"], correct:1, explanation:"Se denuncia por el Art. 20 del Reglamento de Explotación (atraque sin autorización) más múltiples infracciones del TRLPEMM: 306.4.a), 307.3.b), 307.3.c), 307.3.d), 307.3.k), 307.3.o) y 307.3.q).", theme:'reglamento' },
+  { q:"El AIS (Sistema de Identificación Automática) es obligatorio en embarcaciones de:", opts:["Menos de 10 metros de eslora","Todo tipo de embarcaciones comerciales que naveguen por aguas españolas","Buques de pasaje y mercantes; no llevarlo puede ser motivo de denuncia","Solo buques de guerra"], correct:2, explanation:"El AIS es obligatorio en determinadas categorías de buques. No tenerlo activado para no ser localizado puede ser causa de denuncia según el Art. 307.3.o) del TRLPEMM (navegar sin sistemas de señalización reglamentarios).", theme:'reglamento' },
+  ];}
+
+// Exam 3-10: Generate 65 questions each with variety
+function getExam3() { return generateThemeExam('mmpp', 3); }
+function getExam4() { return generateThemeExam('reglamento', 4); }
+function getExam5() { return generateThemeExam('orc', 5); }
+function getExam6() { return generateThemeExam('proteccion', 6); }
+function getExam7() { return generateThemeExam('ley_puertos', 7); }
+function getExam8() { return generateThemeExam('reglamento', 8); }
+function getExam9() { return generateThemeExam('ley_puertos', 9); }
+function getExam10() { return generateThemeExam('reglamento', 10); }
+
+function generateThemeExam(mainTheme, seed) {
+  // Pool of questions categorized by theme
+  const pool = [
+    { q:"¿Qué significa 'barlovento' en el contexto de emergencias portuarias?", opts:["El lado por donde sopla el viento hacia el siniestro","El lado de donde viene el viento, alejado del siniestro","El lado más cercano al mar","El lado opuesto al muelle"], correct:1, explanation:"Barlovento es el lado o punto desde donde sopla el viento. En emergencias, el personal se coloca a barlovento para que el viento lleve los gases o humos LEJOS de ellos, hacia el siniestro.", theme:'reglamento' },
+    { q:"¿Qué es el PEI en el contexto portuario?", opts:["Plan de Emergencias Interno de cada empresa","Plan de Emergencias Interior del puerto, que regula la respuesta ante incidentes graves","Plan de Evacuación de Instalaciones","Protocolo de Emergencias Internacionales"], correct:1, explanation:"El PEI es el Plan de Emergencias Interior del puerto, que establece la organización y los procedimientos para la respuesta interna ante situaciones de emergencia. Lo activa el Director de la Emergencia.", theme:'reglamento' },
+    { q:"¿Cuál es la diferencia entre infracción grave y muy grave según el TRLPEMM?", opts:["Solo la cuantía de la multa","La gravedad del daño y la reincidencia, entre otros factores","Solo el tipo de bien afectado","No existe diferencia práctica"], correct:1, explanation:"La clasificación entre infracción grave y muy grave depende de factores como la gravedad del daño causado, la reincidencia, el incumplimiento doloso o la afectación a la seguridad pública.", theme:'ley_puertos' },
+    { q:"Un buque pesquero de base en Alicante que atraca a las 22:00h para descargar atún: ¿puede descargar directamente al camión?", opts:["Sí, si tiene autorización de atraque","No; la pesca debe pasar por cofradía y lonja, no puede descargarse directamente al camión","Sí, fuera del horario de lonja","No sin consultar al Capitán Marítimo"], correct:1, explanation:"La pesca tiene que pasar por cofradía y lonja obligatoriamente. No pueden realizar la descarga directamente al camión. Si continúan, se denuncia por desobediencia y por descarga de pescado sin pasar por lonja.", theme:'reglamento' },
+    { q:"¿Qué es un 'noray' en instalaciones portuarias?", opts:["Un tipo de embarcación de servicio","Un punto de amarre fijo en tierra al que se atan los cabos del buque","Un tipo de señal marítima","Un elemento del sistema AIS"], correct:1, explanation:"Un noray es un poste o bolardo firmemente anclado en el muelle al que se atan los cabos y amarras de los buques para mantenerlos sujetos al muelle.", theme:'reglamento' },
+    { q:"¿Qué hace la policía portuaria si una defensa se desprende durante la maniobra de atraque y queda a la deriva?", opts:["No actúa, es responsabilidad del buque","Avisa al capitán del buque, si puede recoge la defensa y la ata a un noray, avisa a mantenimiento y al práctico","Solo avisa a mantenimiento","Redacta informe y espera"], correct:1, explanation:"Se avisa al capitán del buque (por si no se ha dado cuenta) y se le hace boletín de denuncia por los daños. Si es posible, se recoge la defensa y ata a un noray para evitar accidentes, se avisa a mantenimiento para su reemplazo y al práctico para que conozca la situación.", theme:'reglamento' },
+    { q:"¿Qué clase de MMPP incluye los gases?", opts:["Clase 1","Clase 2","Clase 3","Clase 4"], correct:1, explanation:"La Clase 2 del Código IMDG corresponde a los Gases: comprimidos, licuados, disueltos a presión, o refrigerados.", theme:'mmpp' },
+    { q:"¿Qué clase de MMPP incluye los explosivos?", opts:["Clase 1","Clase 2","Clase 3","Clase 4"], correct:0, explanation:"La Clase 1 del Código IMDG corresponde a los Explosivos, dividida en divisiones del 1.1 al 1.6 según el tipo de riesgo.", theme:'mmpp' },
+    { q:"¿Qué clase de MMPP incluye los líquidos inflamables?", opts:["Clase 2","Clase 3","Clase 4","Clase 5"], correct:1, explanation:"La Clase 3 del Código IMDG corresponde a los Líquidos Inflamables, como la gasolina, el alcohol o los disolventes.", theme:'mmpp' },
+    { q:"¿Cuál es la función del número ONU en una mercancía peligrosa?", opts:["Indica el peso de la carga","Es un número de 4 cifras que identifica de forma única la sustancia peligrosa a nivel internacional","Indica el país de origen","Es el número de lote de fabricación"], correct:1, explanation:"El número ONU (o número UN) es un código de 4 dígitos asignado por las Naciones Unidas que identifica de manera única y universal una sustancia o artículo peligroso.", theme:'mmpp' },
+    { q:"¿Qué artículo de la Ordenanza de Circulación (ORC) prohíbe no llevar cinturón de seguridad?", opts:["Art. 18.3","Art. 18.4","Art. 18.5","Art. 19.1"], correct:2, explanation:"El Art. 18.5 de la ORC establece la obligación de utilizar el cinturón de seguridad durante la conducción en zona portuaria.", theme:'orc' },
+    { q:"¿Cuántos puntos tiene el carnet de conducir en España cuando se obtiene por primera vez?", opts:["8 puntos","10 puntos","12 puntos","15 puntos"], correct:0, explanation:"El permiso de conducción en España se obtiene con 8 puntos durante el período de conducción acompañada y los primeros años.", theme:'orc' },
+    { q:"¿Cuándo se puede iniciar la circulación de vehículos en zona portuaria?", opts:["Cuando tengan el carnet con 15 puntos","Cuando el vehículo esté homologado","Cuando obtengan previamente el permiso de circulación","Con solo la documentación del vehículo"], correct:2, explanation:"La circulación de vehículos en zona portuaria exige que hayan obtenido previamente el permiso de circulación para acceder a dicha zona.", theme:'orc' },
+    { q:"¿Qué documentación debe presentar un conductor en el control de acceso de zona restringida?", opts:["Solo DNI","DNI y tarjeta de embarque si es pasajero, o conformidad OCAE si es actividad laboral","Solo la tarjeta de acceso","Solo el permiso de conducir"], correct:1, explanation:"En el control de acceso se requiere DNI siempre, más la tarjeta de embarque si viaja como pasajero, o la conformidad OCAE y homologación de empresa si es actividad laboral.", theme:'orc' },
+    { q:"La señalización de una zona de obras en muelle debe incluir:", opts:["Solo conos naranjas","Triángulos de preseñalización, conos, señales de obras y, si es nocturno, elementos luminosos","Solo vallado perimetral","Solo señales luminosas"], correct:1, explanation:"La señalización de zona de obras en muelle debe incluir triángulos de preseñalización, conos, señales de obras y elementos luminosos en horario nocturno.", theme:'orc' },
+    { q:"¿Qué es el ISPS Code en el contexto portuario?", opts:["Código Internacional para la Seguridad de los Buques y de las Instalaciones Portuarias","Código Internacional de Señales Portuarias","Sistema Internacional de Posicionamiento en el Mar","Código de Inspección de Servicios Portuarios"], correct:0, explanation:"El Código ISPS (International Ship and Port facility Security Code) es el Código Internacional para la Seguridad de los Buques y de las Instalaciones Portuarias, que establece medidas de protección.", theme:'proteccion' },
+    { q:"¿Cuántos niveles de protección establece el Código ISPS?", opts:["2","3","4","5"], correct:1, explanation:"El Código ISPS establece 3 niveles de protección: Nivel 1 (normal), Nivel 2 (elevado) y Nivel 3 (excepcional).", theme:'proteccion' },
+    { q:"¿Quién designa al Oficial de Protección de la Instalación Portuaria (PFSO)?", opts:["La Autoridad Portuaria","El Consejo de Administración","El Director de la instalación","La autoridad competente para la protección marítima"], correct:2, explanation:"El Oficial de Protección de la Instalación Portuaria (PFSO - Port Facility Security Officer) es designado por el director de la instalación portuaria.", theme:'proteccion' },
+    { q:"¿Qué es el PBIP o plan de protección de la instalación portuaria?", opts:["Plan de Bomberos e Incendios del Puerto","Plan de Protección de la Instalación Portuaria que recoge las medidas para cada nivel de protección","Plan de Brigadas de Intervención Portuaria","Protocolo de Buques de Interés Público"], correct:1, explanation:"El PBIP (o PFSP en inglés - Port Facility Security Plan) es el Plan de Protección de la Instalación Portuaria, que establece las medidas de seguridad para cada nivel de protección ISPS.", theme:'proteccion' },
+    { q:"En el nivel de protección 3 del Código ISPS, las medidas de seguridad son:", opts:["Mínimas, solo revisión documental","Las habituales de vigilancia","Excepcionales, con restricciones máximas de acceso y coordinación con autoridades","Las mismas que en nivel 2 pero con más personal"], correct:2, explanation:"El nivel de protección 3 es excepcional y se aplica ante amenazas específicas. Implica medidas extremas incluyendo restricciones máximas de acceso, escolta de personas y coordinación intensa con las autoridades.", theme:'proteccion' },
+    { q:"¿Cuánto vale una sanción leve según el TRLPEMM?", opts:["Hasta 1.000 euros","Hasta 3.000 euros","Hasta 6.000 euros","Hasta 30.000 euros"], correct:2, explanation:"Las infracciones leves según el TRLPEMM pueden sancionarse con multas de hasta 6.000 euros.", theme:'ley_puertos' },
+    { q:"Las infracciones graves en el ámbito portuario pueden sancionarse con multas de:", opts:["Hasta 6.000 euros","De 6.001 a 60.000 euros","De 6.001 a 300.000 euros","De 60.001 a 600.000 euros"], correct:2, explanation:"Las infracciones graves según el TRLPEMM pueden sancionarse con multas de 6.001 hasta 300.000 euros.", theme:'ley_puertos' },
+    { q:"¿Cuál es el órgano máximo de gobierno de las Autoridades Portuarias?", opts:["El Director","El Presidente","El Consejo de Administración","El Consejo de Navegación y Puerto"], correct:2, explanation:"El Consejo de Administración es el órgano máximo de gobierno de las Autoridades Portuarias.", theme:'ley_puertos' },
+    { q:"¿Quién preside el Consejo de Administración de una Autoridad Portuaria?", opts:["El Director del Puerto","El Presidente de la AP, nombrado por el Consejo de Ministros a propuesta del Ministerio de Fomento","El Capitán Marítimo","El Presidente de la Comunidad Autónoma"], correct:1, explanation:"El Presidente de la Autoridad Portuaria preside el Consejo de Administración. Es nombrado por el Consejo de Ministros a propuesta del Ministro de Fomento (ahora Transportes).", theme:'ley_puertos' },
+    { q:"¿Quién ejerce las funciones de control del tráfico portuario (VTS)?", opts:["La Guardia Civil","El Centro de Control de Tráfico Portuario, dependiente de la AP","El Capitán Marítimo directamente","Puertos del Estado"], correct:1, explanation:"Las funciones de VTS (Vessel Traffic Service) o control de tráfico portuario son ejercidas por el Centro de Control de Tráfico Portuario, dependiente de la Autoridad Portuaria.", theme:'ley_puertos' },
+    { q:"¿Qué es el fondeo de una embarcación?", opts:["Proceso de atracar al muelle","Proceso de anclar una embarcación en el fondo del mar mediante ancla y cadena","Proceso de dar varada a una embarcación","Proceso de abandonar una embarcación"], correct:1, explanation:"El fondeo es la operación de anclar una embarcación, echando el ancla al fondo del mar o fondeadero, con la cadena del ancla manteniendo el buque en posición.", theme:'reglamento' },
+    { q:"¿Qué son las 'defensas' en un muelle?", opts:["Sistema de seguridad antiintruso","Elementos elásticos colocados entre el buque y el muelle para amortiguar el impacto durante el atraque","Personal de seguridad del muelle","Redes metálicas bajo el muelle"], correct:1, explanation:"Las defensas son elementos elásticos (normalmente de goma o material similar) colocados entre el casco del buque y el muelle para absorber los impactos durante las maniobras de atraque.", theme:'reglamento' },
+    { q:"¿A qué temperatura se define el flash point de una sustancia?", opts:["Temperatura de autoignición","Temperatura mínima a la que una sustancia emite vapores que se inflaman momentáneamente en presencia de llama","Temperatura de ebullición","Temperatura de fusión"], correct:1, explanation:"El flash point o punto de inflamación es la temperatura mínima a la que una sustancia líquida emite suficientes vapores que, en presencia de una fuente de ignición, se inflaman momentáneamente.", theme:'mmpp' },
+    { q:"¿Qué clase de MMPP incluye las materias infecciosas?", opts:["Clase 5","Clase 6","Clase 7","Clase 8"], correct:1, explanation:"La Clase 6 del Código IMDG incluye las materias tóxicas e infecciosas, dividida en División 6.1 (tóxicas) y División 6.2 (infecciosas).", theme:'mmpp' },
+    { q:"¿Qué clase de MMPP incluye los materiales radiactivos?", opts:["Clase 6","Clase 7","Clase 8","Clase 9"], correct:1, explanation:"La Clase 7 del Código IMDG corresponde a las Materias Radiactivas.", theme:'mmpp' },
+    { q:"¿Qué clase de MMPP incluye las materias corrosivas?", opts:["Clase 6","Clase 7","Clase 8","Clase 9"], correct:2, explanation:"La Clase 8 del Código IMDG corresponde a las Materias Corrosivas, como los ácidos y bases fuertes.", theme:'mmpp' },
+    { q:"¿Cuál es el procedimiento ante un usuario desvanecido durante una epidemia de gripe?", opts:["Llevarlo al vehículo patrulla","Comunicar al 112, desalojar el lugar señalizándolo y atender al desvanecido con medidas de seguridad, dirigir el tráfico para acceso de emergencias","Solo llamar al 112 y esperar","Aislarlo sin comunicar nada"], correct:1, explanation:"Se comunica al 112 con todos los datos, se desaloja y señaliza el lugar con los medios disponibles, se atiende al desvanecido en todo momento con las medidas de seguridad pertinentes y se dirige el tráfico para facilitar el acceso de los servicios de emergencia.", theme:'reglamento' },
+    { q:"¿Qué es el 'rol' de una embarcación?", opts:["El contrato de trabajo de los tripulantes","La Licencia de Navegación o lista de tripulantes, debidamente despachada por Capitanía Marítima","El seguro de la embarcación","El registro de la actividad diaria de la embarcación"], correct:1, explanation:"El Rol es la Licencia de Navegación de la embarcación, que contiene la lista de tripulantes autorizados. Debe estar debidamente despachado por Capitanía Marítima antes de cada salida.", theme:'reglamento' },
+    { q:"El acceso a zonas de acceso limitado sin autorización por parte de peatones se regula en:", opts:["Art. 2 ORC","Art. 4 ORC Baleares","Art. 10 Reglamento de Explotación","Art. 307 TRLPEMM"], correct:1, explanation:"El Art. 4 de la Ordenanza reguladora de la circulación por la zona de servicio de los puertos de la Autoridad Portuaria de Baleares regula el acceso a zonas de acceso limitado sin la correspondiente autorización por parte de peatones.", theme:'orc' },
+    { q:"¿Cuándo se considera 'doble fila' el estacionamiento?", opts:["Cuando hay dos vehículos aparcados juntos","Cuando un vehículo estaciona bloqueando a otro vehículo ya estacionado legalmente junto al bordillo","Cuando hay más de 2 vehículos en el mismo espacio","Cuando un vehículo aparca junto a un muelle"], correct:1, explanation:"El estacionamiento en doble fila se produce cuando un vehículo se detiene o estaciona junto a otro vehículo que ya está aparcado correctamente junto al bordillo, bloqueando la circulación.", theme:'orc' },
+    { q:"¿Cuál es la primera medida ante la detección de un incendio en una embarcación en el puerto deportivo?", opts:["Extinguir el fuego personalmente","Comprobar la veracidad del aviso y comunicar al Centro de Control","Desalojar todo el puerto","Avisar al Capitán Marítimo sin más trámites"], correct:1, explanation:"La primera medida es comprobar la veracidad del aviso (puede ser falsa alarma) y si se confirma, comunicar al Centro de Control. Después se procede con extinción si está en fase inicial, se avisa al Capitán Marítimo, se acordona y se facilita acceso a servicios de extinción.", theme:'reglamento' },
+    { q:"¿Qué es la 'varada' de una embarcación?", opts:["Acción de botar una embarcación al agua","Acción de sacar una embarcación del agua y depositarla en tierra","Acción de fondear en aguas poco profundas","Acción de amarrar en un varadero flotante"], correct:1, explanation:"La varada es la acción de sacar una embarcación del agua y depositarla en tierra o sobre una superficie, utilizando una rampa o elementos de izado.", theme:'reglamento' },
+    { q:"¿Qué documentación específica requiere la titulación del patrón de una embarcación de recreo?", opts:["Solo el DNI y póliza de seguros","La titulación que acredita la aptitud para el gobierno de la embarcación (Patrón de Embarcación de Recreo, etc.)","Solo el carnet de marinero","El carnet de conducir equivalente náutico"], correct:1, explanation:"El patrón debe acreditar la titulación que le habilita para el gobierno de esa embarcación: Patrón de Embarcación de Recreo (PER), Patrón de Yate (PY), Capitán de Yate, según las características de la embarcación.", theme:'reglamento' },
+    { q:"El Fondo de Compensación Portuario tiene como objetivo:", opts:["Compensar las pérdidas de explotación de los puertos","Corregir desequilibrios económicos interportuarios garantizando el desarrollo del sistema portuario","Financiar las obras de ampliación de puertos","Pagar a los funcionarios portuarios"], correct:1, explanation:"El Fondo de Compensación Portuario tiene por objeto corregir los desequilibrios económicos interportuarios para garantizar el desarrollo equilibrado del sistema portuario.", theme:'ley_puertos' },
+    { q:"¿Qué es el 'Ullage' en el contexto de cisternas de MMPP?", opts:["La temperatura de autoignición","La distancia entre la superficie del líquido y la parte superior del tanque (espacio de vapor)","El nivel máximo de llenado permitido","El tipo de válvula de seguridad"], correct:1, explanation:"El Ullage es la distancia entre la superficie del producto líquido y la parte superior del tanque o cisterna. Es el espacio libre de la cisterna que permite la expansión del producto.", theme:'mmpp' },
+    { q:"El buque 'Carmen del Mar' que llega con una empresa de buzos para reparar una pequeña grieta: la actuación del PFSO es:", opts:["Dejarles entrar libremente","Consultar con el Centro de Control si el acceso y la operación están autorizados; si no está autorizado, no puede atracar; si está autorizado, comprobar que la empresa está censada","Ordenarles directamente que sigan","Llamar al Capitán Marítimo exclusivamente"], correct:1, explanation:"Se consulta con el Centro de Control o Jefe de Equipo si el acceso y la realización de esa operación están autorizados. Si no está autorizada la embarcación para atracar, no puede hacerlo. Si está autorizado, verificar que la empresa esté censada y tenga la conformidad OCAE.", theme:'proteccion' },
+    { q:"¿Qué es el 'patache' en terminología portuaria?", opts:["Un tipo de grúa portuaria","Una embarcación auxiliar del puerto para el servicio de prácticos o de transporte menudo","Un tipo de señal marítima flotante","Una zona de almacenamiento temporal"], correct:1, explanation:"El patache es una embarcación auxiliar del puerto, generalmente utilizada para el transporte de prácticos, correos o mercancías de poco volumen.", theme:'reglamento' },
+    { q:"¿Cuándo se considera que un trabajador está en situación de riesgo grave e inminente?", opts:["Solo si hay un accidente ya producido","Cuando exista una probabilidad razonable de que se materialice en un futuro inmediato y pueda suponer un daño grave para la salud de los trabajadores","Solo en trabajos con altura","Cuando el supervisor lo determina"], correct:1, explanation:"La situación de riesgo grave e inminente es aquella en que existe una probabilidad razonable de que se materialice en un futuro inmediato y pueda suponer un daño grave para la salud de los trabajadores.", theme:'reglamento' },
+    { q:"La zona de afección de una explosión en cisterna de MMPP se determina en función de:", opts:["El tamaño visible de las llamas","El radio de acción de los efectos de la posible explosión, según los rótulos MMPP","Solo la distancia estándar de 50 metros","El criterio del jefe de servicio en cada caso"], correct:1, explanation:"El acordonamiento en caso de incendio en cisterna de MMPP se realiza teniendo en cuenta el radio de acción de los efectos de una posible explosión, que se determina en función de la información de los rótulos MMPP y la información del código de emergencia.", theme:'mmpp' },
+    { q:"¿Qué es la 'manga' de un buque?", opts:["La eslora máxima","La anchura máxima del casco","La altura desde la quilla hasta la cubierta","El calado máximo"], correct:1, explanation:"La manga es la anchura máxima del casco de un buque o embarcación.", theme:'reglamento' },
+    { q:"¿Qué es el 'calado' de un buque?", opts:["La eslora total","La anchura máxima","La profundidad de la parte sumergida del buque desde la línea de flotación hasta la quilla","La distancia entre proa y popa"], correct:2, explanation:"El calado es la profundidad que alcanza la parte sumergida del casco de un buque, medida desde la línea de flotación hasta la quilla.", theme:'reglamento' },
+    { q:"La 'eslora' de un buque es:", opts:["La anchura máxima","La longitud total del buque de proa a popa","El calado máximo permitido","La altura del mástil"], correct:1, explanation:"La eslora es la longitud total del buque, medida de proa a popa.", theme:'reglamento' },
+    { q:"¿Qué es el 'puntal' de un buque?", opts:["La eslora","La manga","La altura del buque medida en la cuaderna maestra desde la línea de la quilla hasta la cubierta principal","El calado"], correct:2, explanation:"El puntal es la altura del buque, medida verticalmente en la cuaderna maestra desde la parte superior de la quilla hasta la cara inferior de la cubierta principal.", theme:'reglamento' },
+    { q:"Las mercancías de Clase 9 del Código IMDG son:", opts:["Materias corrosivas","Materias comburentes","Materias y objetos peligrosos varios que no pertenecen a otra clase","Materias radiactivas"], correct:2, explanation:"La Clase 9 del Código IMDG son Materias y Objetos Peligrosos Varios, que presentan un peligro diferente al resto de clases.", theme:'mmpp' },
+    { q:"¿Qué documentación debe aportar una empresa para trabajar en zona portuaria restringida según la OCAE?", opts:["Solo el CIF de la empresa","Homologación de la empresa en la OCAE y conformidad de acceso para la actividad concreta","Solo el seguro de responsabilidad civil","Solo el DNI de los trabajadores"], correct:1, explanation:"Para trabajar en zona de acceso restringido portuaria se necesita: la homologación de la empresa en la OCAE y la conformidad de acceso de dicha empresa para esa actividad concreta, sea de corta o larga duración.", theme:'reglamento' },
+    { q:"¿Qué son los 'Puertos de Refugio' según el TRLPEMM?", opts:["Puertos deportivos para embarcaciones de recreo","Lugares designados para acoger buques en peligro que necesitan asistencia y que representan una amenaza para el medio ambiente","Puertos militares en caso de emergencia nacional","Puertos privados para uso exclusivo de navieras"], correct:1, explanation:"Los puertos o lugares de refugio son lugares designados o habilitados por los Estados costeros para acoger buques que se encuentran en situación de necesidad de asistencia y que pueden representar una amenaza para el medio ambiente marino.", theme:'ley_puertos' },
+    { q:"En un incendio que afecta a embarcaciones en el puerto deportivo, ¿a quién se avisa además del SEIB 112?", opts:["Solo al Capitán Marítimo","Al Capitán Marítimo, a Salvamento Marítimo y al Centro de Control de tráfico portuario","Solo al Centro de Control","Al Ministerio del Interior"], correct:1, explanation:"Además del SEIB 112, se notifica al Capitán Marítimo, a Salvamento Marítimo y al servicio de control de tráfico portuario, ya que la incidencia afecta a embarcaciones en zona marítima.", theme:'reglamento' },
+    { q:"¿Qué diferencia hay entre 'obras de conservación' y 'obras de ampliación' en zona portuaria?", opts:["No hay diferencia, ambas requieren los mismos trámites","Las obras de conservación son menores y pueden tener procedimiento simplificado OCAE; las de ampliación requieren concesión y proyecto aprobado","Las obras de ampliación son gratuitas si las hace la AP","Las obras de conservación no requieren ningún trámite"], correct:1, explanation:"Las obras de conservación o mantenimiento pueden tener un procedimiento OCAE simplificado. Las obras de ampliación o nueva construcción en zona portuaria siempre requieren concesión de dominio público portuario y proyecto técnico aprobado.", theme:'reglamento' },
+    { q:"¿Qué implica la 'mano libre' en un sistema de navegación bajo práctico?", opts:["El práctico tiene el mando total sobre el capitán","El práctico asesora pero la responsabilidad sigue siendo del capitán, quien mantiene el mando sobre la tripulación","El capitán es responsable solo de la carga","La Autoridad Portuaria asume la responsabilidad"], correct:1, explanation:"Aunque el práctico está a bordo y asesora en la maniobra, el capitán siempre mantiene el mando sobre la tripulación y la responsabilidad náutica del buque.", theme:'ley_puertos' },
+    { q:"¿Cuándo puede la policía portuaria retener temporalmente un vehículo en zona portuaria?", opts:["Solo con autorización judicial","Cuando por razones de urgencia o necesidad lo exija la seguridad vial o la operativa portuaria, sin perjuicio de su posterior regularización","Nunca, solo puede denunciar","Solo cuando lo ordene el jefe de servicio"], correct:1, explanation:"La policía portuaria puede retener o retirar temporalmente vehículos cuando razones de urgencia o necesidad lo exija, como situaciones de peligro para la circulación o la operativa portuaria.", theme:'orc' },
+    { q:"¿Qué incluye la documentación personal de los tripulantes en una embarcación?", opts:["Solo el DNI","DNI o pasaporte, libretas de inscripción marítima y títulos náuticos correspondientes","Solo el pasaporte para viajes internacionales","Solo los contratos de trabajo"], correct:1, explanation:"La documentación personal de los tripulantes incluye: DNI o pasaporte, libreta de inscripción marítima y los títulos náuticos que les habilitan para ejercer sus funciones a bordo.", theme:'reglamento' },
+    { q:"¿Qué es el 'abanderamiento' de un buque?", opts:["La acción de izar la bandera en el palo","El acto jurídico por el que un buque queda inscrito en el Registro de Buques de un Estado y tiene derecho a enarbolar su pabellón","La autorización de navegación temporal","El nombre oficial del buque"], correct:1, explanation:"El abanderamiento es el acto jurídico por el que un buque queda inscrito en el Registro de Buques de un Estado, adquiriendo el derecho y la obligación de enarbolar su pabellón nacional.", theme:'reglamento' },
+    { q:"¿Qué datos mínimos debe contener una denuncia de tráfico según el Art. 48.4 de la ORC?", opts:["Solo matrícula del vehículo","Matrícula, marca, modelo del vehículo, lugar y hora de la infracción, y filiación del conductor si es posible identificarle","Solo el nombre del conductor","Solo la infracción cometida"], correct:1, explanation:"Según el Art. 48.4 de la ORC, los datos requeridos para una denuncia de tráfico incluyen: matrícula del vehículo, marca, modelo, lugar, hora de la infracción y, siempre que sea posible, la filiación del conductor infractor.", theme:'orc' },
+    { q:"¿Cuándo se realiza la denuncia por boletín en zona portuaria?", opts:["Solo para faltas muy graves","Para cualquier incumplimiento de la normativa portuaria, de tráfico o de policía portuaria detectado por los agentes","Solo para infracciones de tráfico","Solo cuando hay daños materiales"], correct:1, explanation:"El boletín de denuncia se formula para cualquier incumplimiento de la normativa portuaria, sea de tráfico, de policía, de daños a instalaciones o de cualquier otra naturaleza detectada por los agentes.", theme:'reglamento' },
+    { q:"¿Cuándo se avisa al práctico en el contexto de maniobras de buques en puerto?", opts:["Solo cuando hay temporal","Para todas las maniobras de entrada y salida de buques que no estén exentos","Solo para buques de más de 500 GT","Solo para buques de pasajeros"], correct:1, explanation:"El practicaje se activa para las maniobras de entrada y salida de buques en el puerto, salvo que estén exentos de practicaje. El práctico asiste al capitán en el conocimiento local de las aguas.", theme:'ley_puertos' },
+    { q:"¿Qué pasa si la Persona B se niega a identificarse durante una actuación policial portuaria?", opts:["Se la puede detener sin más","Se puede pedir apoyo a las Fuerzas y Cuerpos de Seguridad del Estado (Policía Nacional o Guardia Civil) que sí tienen facultades de identificación coactiva","Se la puede cachear directamente","Se la puede expulsar de la zona sin más trámite"], correct:1, explanation:"La Policía Portuaria no tiene facultades de identificación coactiva. Si alguien se niega a identificarse, se puede solicitar la colaboración de la Policía Nacional o la Guardia Civil, que sí cuentan con dichas facultades.", theme:'reglamento' },
+  ];
+
+  // Shuffle and take 65 for this exam, adjusting to seed
+  const shuffled = [...pool].sort(() => (seed * 0.3 - 0.5 + Math.sin(seed * pool.indexOf(pool[0]))) % 1);
+  // Deterministic shuffle based on seed
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor((i * seed * 7 + 13) % (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  // Return first 65 or cycle if needed
+  const result = [];
+  while(result.length < 65) {
+    result.push(...pool.slice(0, Math.min(pool.length, 65 - result.length)));
+  }
+  return result.slice(0, 65);
+}
+
+// ═══════════════════════════════════════════════════════
+// TEST RENDERING
+// ═══════════════════════════════════════════════════════
+function renderTestList() {
+  const scores = userProgress.examScores || {};
+  document.getElementById('test-list').innerHTML = EXAMS.map(e => {
+    const pct = scores[e.id];
+    let badgeClass = '', badgeText = 'Sin realizar';
+    if(pct !== undefined) {
+      badgeText = pct + '%';
+      badgeClass = pct >= 75 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    }
+    return `<div class="exam-item" onclick="startExam('${e.id}')">
+      <div class="exam-item-left">
+        <div class="exam-num">${EXAMS.indexOf(e)+1}</div>
+        <div>
+          <div class="exam-name">${e.name}</div>
+          <div class="exam-meta">${e.questions.length} preguntas · Penalización: -0.25 por error</div>
+        </div>
+      </div>
+      <div class="exam-score-badge ${badgeClass}">${badgeText}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════
+let currentExam = null;
+let currentQ = 0;
+let answered = [];
+let quizAnswers = [];
+
+window.startExam = function(examId) {
+  currentExam = EXAMS.find(e => e.id === examId);
+  currentQ = 0;
+  answered = new Array(currentExam.questions.length).fill(null);
+  quizAnswers = [];
+  showPage('page-quiz');
+  renderQuestion();
+};
+
+function renderQuestion() {
+  const q = currentExam.questions[currentQ];
+  const total = currentExam.questions.length;
+  document.getElementById('quiz-progress-info').textContent = `Pregunta ${currentQ+1} de ${total}`;
+  document.getElementById('quiz-progress-fill').style.width = ((currentQ/total)*100)+'%';
+  document.getElementById('q-num').textContent = `Pregunta ${currentQ+1}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['a','b','c','d'];
+  document.getElementById('q-options').innerHTML = q.opts.map((o,i) =>
+    `<button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">
+      <span class="option-letter">${letters[i]}</span>${o}
+    </button>`
+  ).join('');
+  document.getElementById('q-feedback').className = 'feedback-box';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-skip').style.display = 'block';
+}
+
+window.selectAnswer = function(idx) {
+  const q = currentExam.questions[currentQ];
+  if(answered[currentQ] !== null) return;
+  answered[currentQ] = idx;
+  quizAnswers[currentQ] = idx;
+  const correct = idx === q.correct;
+  document.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.disabled = true;
+    if(i === q.correct) b.classList.add('correct');
+    else if(i === idx && !correct) b.classList.add('wrong');
+    else if(i !== idx) b.classList.add('revealed');
+  });
+  const fb = document.getElementById('q-feedback');
+  fb.textContent = q.explanation || '';
+  fb.className = 'feedback-box ' + (correct ? '' : 'wrong-fb') + ' show';
+  document.getElementById('btn-skip').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'block';
+};
+
+window.skipQuestion = function() {
+  answered[currentQ] = -1;
+  quizAnswers[currentQ] = -1;
+  nextQuestion();
+};
+
+window.nextQuestion = function() {
+  if(currentQ < currentExam.questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    finishExam();
+  }
+};
+
+window.confirmExitQuiz = function() {
+  if(confirm('¿Salir del examen? Se perderá el progreso.')) showPage('page-test');
+};
+
+window.retryExam = function() {
+  startExam(currentExam.id);
+};
+
+async function finishExam() {
+  const qs = currentExam.questions;
+  let correct=0, wrong=0, skipped=0;
+  const weaknesses = [];
+  const themeStats = {};
+
+  qs.forEach((q,i) => {
+    const a = answered[i];
+    const t = q.theme || 'reglamento';
+    if(!themeStats[t]) themeStats[t] = {correct:0, total:0};
+    themeStats[t].total++;
+    if(a === -1 || a === null) { skipped++; }
+    else if(a === q.correct) { correct++; themeStats[t].correct++; }
+    else { wrong++; weaknesses.push({question:q.q, yourAnswer:q.opts[a], correct:q.opts[q.correct]}); }
+  });
+
+  const score = correct - (wrong * 0.25);
+  const pct = Math.round((correct/qs.length)*100);
+
+  // Update theme stats in Firebase
+  for(const [theme, stat] of Object.entries(themeStats)) {
+    await saveThemeStat(theme, stat.correct, stat.total);
+  }
+
+  await saveTestResult(currentExam.id, currentExam.name, score.toFixed(2), pct, correct, wrong, skipped, weaknesses);
+
+  // Render results
+  const ring = document.getElementById('results-ring');
+  ring.textContent = pct + '%';
+  ring.className = 'score-ring ' + (pct>=75?'great':pct>=50?'ok':'bad');
+
+  document.getElementById('results-title').textContent =
+    pct>=75 ? '🎉 ¡Excelente resultado!' : pct>=50 ? '💪 Buen intento, sigue mejorando' : '📚 Necesitas repasar más';
+  document.getElementById('results-sub').textContent =
+    `${currentExam.name} — Nota: ${score.toFixed(2)} puntos`;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-skip').textContent = skipped;
+
+  const wl = document.getElementById('weakness-list');
+  if(weaknesses.length === 0) {
+    wl.innerHTML = '<div style="color:var(--green);font-size:0.9rem;padding:12px;">✅ ¡Sin errores! Excelente trabajo.</div>';
+  } else {
+    wl.innerHTML = weaknesses.slice(0,10).map(w =>
+      `<div class="weakness-item">
+        <div class="w-q">${w.question}</div>
+        <div class="w-a">Tu respuesta: ${w.yourAnswer}</div>
+        <div class="w-correct">Correcta: ${w.correct}</div>
+      </div>`
+    ).join('');
+  }
+
+  showPage('page-results');
+}
+
+// ═══════════════════════════════════════════════════════
+// SUPUESTOS PRÁCTICOS
+// ═══════════════════════════════════════════════════════
+const SUPUESTOS = [
+  {
+    id:'s1',
+    title:'Uso no autorizado de rampa en Marina Seca',
+    scenario:'Usted se encuentra patrullando junto a su compañero y detectan una discusión entre varias personas en las inmediaciones de la Marina Seca. La persona A acredita su autorización para depositar su embarcación y usar la rampa para su botadura. La persona A acusa a la persona B de no disponer de autorización. La persona B se muestra nerviosa y muestra una tarjeta de acceso que no corresponde con sus datos personales ni su embarcación. Además, la embarcación de B contiene un cartel visible de "SE VENDE". ¿Cómo actuaría?'
+  },
+  {
+    id:'s2',
+    title:'Atraque no autorizado - Lista 6ª cargando pasajeros',
+    scenario:'Usted y su compañero detectan una embarcación de lista 6ª que se encuentra cargando pasajeros en una zona próxima al muelle donde normalmente no está destinada a ser utilizada como punto de atraque. ¿Cuál sería su actuación? Detalle los artículos aplicables.'
+  },
+  {
+    id:'s3',
+    title:'Incendio en cisterna de mercancía peligrosa inflamable',
+    scenario:'En la explanada de almacenamiento de carga rodada, detecta usted un incendio en la cabeza tractora que transporta una cisterna de combustible (mercancía peligrosa inflamable). Se encuentra solo de servicio y no puede localizar a su responsable directo. ¿Cómo actuaría? Detalle todas las fases.'
+  },
+  {
+    id:'s4',
+    title:'Derrame de líquido corrosivo desde cisterna en muelle',
+    scenario:'Detecta una fuga de un líquido corrosivo desde una cisterna de mercancía peligrosa situada en la explanada de almacenamiento de carga rodada. ¿Cómo actuaría? Describa la actuación completa, incluyendo las comunicaciones, las medidas de contención y los boletines de denuncia que formularía.'
+  },
+  {
+    id:'s5',
+    title:'Accidente de tráfico en zona portuaria con daños a instalaciones',
+    scenario:'Recibe aviso del 112 informando sobre un accidente de tráfico leve entre 2 vehículos en zona portuaria. No ha habido heridos, pero sí han dañado parte de las instalaciones portuarias (una señal y parte del bordillo). ¿Cuál sería su actuación completa? Indique los boletines y artículos aplicables.'
+  },
+  {
+    id:'s6',
+    title:'Obras sin autorización en puerto deportivo de Formentera',
+    scenario:'Observa que en el Puerto Deportivo Marina de Formentera hay una valla rota y que un grupo de peones se disponen a arreglarla. Los peones ya han comenzado los trabajos cuando usted llega. Uno de los responsables le dice que es una reparación de emergencia por una fuga de agua. ¿Cómo actuaría en cada uno de los posibles escenarios?'
+  },
+  {
+    id:'s7',
+    title:'Venta ambulante no autorizada en zona pública del puerto',
+    scenario:'Estando de servicio, observa sobre la acera en la zona pública del Puerto a un individuo realizando la venta de diversos productos: bolsos, carteras, gorras e imanes de aparente imitación de marcas de lujo. El vendedor habla muy poco español y al solicitar documentación muestra un pasaporte extranjero. ¿Cuál sería su actuación completa?'
+  },
+  {
+    id:'s8',
+    title:'Vehículos mal estacionados - Múltiple infracción',
+    scenario:'Durante su ronda de servicios detecta que hay tres vehículos mal estacionados: uno sobre la acera (sin conductor), otro en doble fila (con conductor a bordo), y un tercero aparcado en un sector regulado sin la debida autorización. Además, el vehículo aparcado sobre la acera presenta una rotura del cárter y produce un derrame de aceite sobre la calzada. ¿Cuál sería su actuación con cada uno de los vehículos?'
+  },
+  {
+    id:'s9',
+    title:'Embarcación en llamas en el puerto deportivo',
+    scenario:'Nos comunican que en el puerto deportivo hay una embarcación en llamas. Al llegar, comprueba que las llamas están en el interior de la embarcación y hay riesgo de propagación a las embarcaciones colindantes. El incendio parece haberse iniciado hace pocos minutos y está en una fase todavía controlable. ¿Cuál sería su actuación completa?'
+  },
+  {
+    id:'s10',
+    title:'Polizón a bordo de buque mercante',
+    scenario:'El capitán de un buque mercante que acaba de atracar en el puerto le avisa de que en su buque llega un polizón. El capitán indica que el polizón es de nacionalidad subsahariana y no porta documentación. ¿Cuál sería su actuación completa como policía portuario? Indique a qué organismos contacta y en qué orden.'
+  },
+];
+
+let currentSupuesto = null;
+
+function renderDesarrolloList() {
+  const dHistory = userProgress.desarrolloHistory || [];
+  document.getElementById('desarro-list').innerHTML = SUPUESTOS.map((s,i) => {
+    const done = dHistory.find(d=>d.supuestoId===s.id);
+    return `<div class="desarro-item" onclick="startSupuesto('${s.id}')">
+      <div class="desarro-icon">${done ? '✅' : '📋'}</div>
+      <div class="desarro-text">
+        <div class="desarro-name">${i+1}. ${s.title}</div>
+        <div class="desarro-meta">${done ? `Última corrección: ${done.aiScore||'—'}/10` : 'Sin realizar'}</div>
+      </div>
+      <span style="color:var(--gold);font-size:1.2rem;">→</span>
+    </div>`;
+  }).join('');
+}
+
+window.startSupuesto = function(id) {
+  currentSupuesto = SUPUESTOS.find(s=>s.id===id);
+  document.getElementById('desarro-exam-title').textContent = currentSupuesto.title;
+  document.getElementById('desarro-scenario').textContent = currentSupuesto.scenario;
+  document.getElementById('desarro-answer').value = '';
+  document.getElementById('ai-response-box').classList.remove('show');
+  showPage('page-desarro-exam');
+};
+
+window.clearDesarrollo = function() {
+  document.getElementById('desarro-answer').value = '';
+  document.getElementById('ai-response-box').classList.remove('show');
+};
+
+window.correDesarrollo = async function() {
+  const answer = document.getElementById('desarro-answer').value.trim();
+  if(!answer || answer.length < 50) {
+    showToast('Escribe una respuesta más completa antes de corregir.', 'error');
+    return;
+  }
+  const box = document.getElementById('ai-response-box');
+  const textEl = document.getElementById('ai-response-text');
+  const scoreEl = document.getElementById('ai-score-display');
+
+  box.classList.add('show');
+  textEl.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  scoreEl.textContent = '';
+
+  const prompt = `Eres un experto evaluador de oposiciones para Policía Portuaria de la Autoridad Portuaria de Baleares (APB). 
+
+SUPUESTO PRÁCTICO: ${currentSupuesto.title}
+ENUNCIADO: ${currentSupuesto.scenario}
+
+RESPUESTA DEL OPOSITOR:
+${answer}
+
+Evalúa la respuesta con los siguientes criterios:
+1. ¿Menciona comunicar al JS/responsable y al Centro de Control como primera actuación?
+2. ¿Identifica correctamente los artículos del TRLPEMM, Reglamento de Servicio y Policía, y/u ORC aplicables?
+3. ¿Describe un protocolo de actuación ordenado y completo?
+4. ¿Menciona los boletines de denuncia pertinentes?
+5. ¿Incluye la elaboración del informe final?
+
+Responde en este formato exacto:
+PUNTUACIÓN: X/10
+
+ASPECTOS POSITIVOS:
+[lista los puntos bien explicados]
+
+ASPECTOS A MEJORAR:
+[lista lo que falta o está incorrecto]
+
+ARTÍCULOS CLAVE QUE DEBES INCLUIR:
+[lista los artículos más importantes para este supuesto]
+
+CONSEJO PARA EL EXAMEN:
+[un consejo específico y práctico]`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b=>b.text||'').join('') || 'Error al obtener respuesta.';
+
+    // Extract score
+    const scoreMatch = text.match(/PUNTUACI[ÓO]N:\s*(\d+(?:\.\d+)?)\s*\/\s*10/i);
+    const score = scoreMatch ? scoreMatch[1]+'/10' : '—/10';
+    scoreEl.textContent = score;
+    scoreEl.style.color = parseFloat(score) >= 7 ? 'var(--green)' : parseFloat(score) >= 5 ? 'var(--gold)' : 'var(--red)';
+
+    textEl.textContent = text;
+    await saveDesarrolloResult(currentSupuesto.id, currentSupuesto.title, score, text);
+    showToast('¡Corrección completada!', 'success');
+  } catch(e) {
+    textEl.textContent = 'Error al conectar con la IA. Por favor, inténtalo de nuevo.';
+    console.error(e);
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+window.showToast = function(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>t.className='toast', 3000);
+};
+
+// Enter key on login
+document.getElementById('login-email').addEventListener('keydown', e=>{
+  if(e.key==='Enter') document.getElementById('login-pass').focus();
+});
+
+</script>
+</body>
+</html>
